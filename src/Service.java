@@ -18,16 +18,15 @@ public class Service extends Entity
         Service s = new Service();
         s.load(s.getSaveFile("T12"));
         System.out.println(s.toString());
-        s.outputIt();
     }
 
-    public void outputIt()
+    /*public void outputIt()
     {
         for(int i = 0; i < stopCount; i++)
         {
             System.out.println(stopTimes[i][0] + "," + stopTimes[i][1]);
         }
-    }
+    }*/
 
 
     //Returns save file, makes one if it doesn't already exist
@@ -89,9 +88,7 @@ public class Service extends Entity
         {
             int i = 0;
             String tempString = br.readLine();
-            System.out.println("Just read this: "+ tempString); //#FOR DEV/TESTING <------------------------ REMOVE THIS LATER!
             String[] tempStringSplit = tempString.split(","); // Splits at commas
-            System.out.println("Successful Split"); //<----------------------------------------------------- REMOVE THIS LATER!
 
             sName = tempStringSplit[0];
             dID = tempStringSplit[1];
