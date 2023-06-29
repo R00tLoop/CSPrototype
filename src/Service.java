@@ -17,7 +17,7 @@ public class Service extends Entity
     {
         Service s = new Service();
         s.load(s.getSaveFile("T12"));
-        System.out.println(s.toString());
+        System.out.println(s);
     }
 
     /*public void outputIt()
@@ -63,7 +63,7 @@ public class Service extends Entity
         return(sName+","+dID+","+vID);
     }
 
-   /* public void save()
+    public void save()
     {
         try(FileWriter fw = new FileWriter(getSaveFile(sName))) // Try-with-resources
         {
@@ -80,7 +80,7 @@ public class Service extends Entity
         {
             System.out.println("Error thrown writing to file.");
         }
-    } */
+    }
 
     public void load(File tempSaveFile)
     {

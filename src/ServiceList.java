@@ -42,4 +42,18 @@ public class ServiceList
             addAccountToList(tempService);
         }
     }
+
+    public static void main(String[] args)
+    {
+        try
+        {
+            File f = new File("Saves\\Services\\");
+            ServiceList sL = new ServiceList();
+            sL.readAllServices(f);
+        }
+        catch(Exception e)
+        {
+            System.out.println("Failed");
+        }
+    }
 }
