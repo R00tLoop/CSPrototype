@@ -2,9 +2,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import java.io.*;
 
 public class PrototypeGUI
 {
+    File saveFolder = new File("Saves\\Services\\");
     JFrame prototypeWindow = new JFrame();
     //JFrame declaration, highest level of GUI
 
@@ -24,7 +26,7 @@ public class PrototypeGUI
     JPanel mainPanel = new JPanel(null);
     //Main panel, contains components
     JButton addSong = new JButton();
-    JComboBox<String> cbxSortBy = new JComboBox<String>(arrSortBy);
+    JComboBox<String> cbxSortBy = new JComboBox<>(arrSortBy);
 
     JButton btnSort = new JButton();
     JButton btnSearch = new JButton();
@@ -129,7 +131,10 @@ public class PrototypeGUI
 
     public void btnReadFile_Click()
     {
-
+        sL = new ServiceList();
+        sL.readAllServices(saveFolder);
+        removeAllRows();
+        addAllRows();
     }
 
     public void btnAddSong_Click()
