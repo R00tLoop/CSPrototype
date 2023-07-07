@@ -7,22 +7,31 @@ public class ServiceList
 
     public boolean addAccountToList(Service temp)
     {
+        // NEEDS REWORK!!!!! -----------------------------------------------------
         boolean taken = false;
-        for(int i = 0; i < position; i++)
+        int i = 0;
+        System.out.println("The boolean taken is " + taken);
+        while(!taken && i < position)
         {
+            System.out.println(allServices[i].sName + " ---- " + temp.sName);
             if((allServices[i].sName).equals(temp.sName))
             {
                 taken = true;
+                break;
             }
+            i++;
         }
-        if(taken == false)
+        if(!taken)
         {
+            System.out.println("Wasn't taken");
             allServices[position] = temp;
+            System.out.println("Added " + temp.sName  + " to position " + position);
             position++;
             return true;
         }
         else
         {
+            System.out.println("Service " + temp.sName  + " was taken in array. Position is " + position);
             return false;
         }
     }
@@ -36,10 +45,19 @@ public class ServiceList
     public void readAllServices(File folder)
     {
         Service tempService = new Service();
-        for(File thisFile : folder.listFiles())
+        try
         {
-            tempService.load(thisFile);
-            addAccountToList(tempService);
+            for (File thisFile : folder.listFiles()) {
+                tempService.load(thisFile);
+                if(!addAccountToList(tempService))
+                {
+                    System.out.println("Account already in list");
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error loading from saves folder");
         }
     }
 
