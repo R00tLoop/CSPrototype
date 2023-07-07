@@ -13,11 +13,12 @@ public class ServiceList
         System.out.println("The boolean taken is " + taken);
         while(!taken && i < position)
         {
-            System.out.println(allServices[i].sName + " ---- " + temp.sName);
+            System.out.println("AllServices i = " + i + ", " + allServices[i].sName + allServices[i].vID + allServices[i].dID + " ---- " + temp.sName + temp.vID + temp.dID);
+            System.out.println("Therefore " + ((allServices[i].sName).equals(temp.sName)));
             if((allServices[i].sName).equals(temp.sName))
             {
                 taken = true;
-                break;
+                //break;
             }
             i++;
         }
@@ -25,7 +26,7 @@ public class ServiceList
         {
             System.out.println("Wasn't taken");
             allServices[position] = temp;
-            System.out.println("Added " + temp.sName  + " to position " + position);
+            System.out.println("Added " + temp.sName  + temp.vID + temp.dID + " to position " + position);
             position++;
             return true;
         }
@@ -49,6 +50,7 @@ public class ServiceList
         {
             for (File thisFile : folder.listFiles()) {
                 tempService.load(thisFile);
+                System.out.println("Attempting to read " + thisFile);
                 if(!addAccountToList(tempService))
                 {
                     System.out.println("Account already in list");
