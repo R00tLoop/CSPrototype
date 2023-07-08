@@ -131,6 +131,7 @@ public class PrototypeGUI
 
     public void btnReadFile_Click()
     {
+        System.out.println("btnReadFile_Click() called");
         sL = new ServiceList();
         sL.readAllServices(saveFolder);
         removeAllRows();
@@ -222,13 +223,13 @@ public class PrototypeGUI
 
     public void addAllRows()
     {
-        int slNumOfSongs = sL.position;
-        Service sTemp;
-        String[] tempElements = new String[3];
+        System.out.println("addAllRows() called");
+        int slNumOfServices = sL.allServices.size();
+        Service sTemp = new Service();
 
-        for(int i = 0; i < slNumOfSongs; i++)
+        for(int i = 0; i < slNumOfServices; i++)
         {
-            sTemp = sL.allServices[i];
+            sTemp = sL.allServices.get(i);
             addRow(sTemp);
         }
     }
