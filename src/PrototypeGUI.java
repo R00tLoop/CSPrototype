@@ -168,9 +168,8 @@ public class PrototypeGUI
 
     public void btnSearch_Click()
     {
-        /*
         // Receive search term from popup
-        String searchTitle = JOptionPane.showInputDialog("Title to search?");
+        String searchName = JOptionPane.showInputDialog("Title to search?");
         // Initialise new temp song
         Service tempService = new Service();
         // Empty the table
@@ -186,7 +185,7 @@ public class PrototypeGUI
         // This temp object is then passed into the add row procedure which adds it to the table
         // If an exception is thrown, then a popup appears saying that an error has occurred
         // If the returned string of indexes is empty then a popup appears stating this and all rows are added to the table
-        String returnedIndexes = sL.searchTitle(searchTitle);
+        String returnedIndexes = sL.searchByName(searchName);
         if(returnedIndexes != null)
         {
             try
@@ -195,8 +194,8 @@ public class PrototypeGUI
 
                 for(int i = 1; i < returnedIndexesSplit.length; i++)
                 {
-                    csTemp = sL.allSongs[Integer.parseInt(returnedIndexesSplit[i])];
-                    addRow(csTemp);
+                    tempService = sL.allServices.get(Integer.parseInt(returnedIndexesSplit[i]));
+                    addRow(tempService);
                 }
             }
             catch(Exception e)
@@ -209,7 +208,6 @@ public class PrototypeGUI
             JOptionPane.showMessageDialog(null, "Unable to find results for search", "Search Unsuccessful", JOptionPane.INFORMATION_MESSAGE);
             addAllRows();
         }
-    */
     }
 
     public void addRow(Service sTempAddRow)
@@ -242,10 +240,13 @@ public class PrototypeGUI
 
     public void removeAllRows()
     {
+        System.out.println("Remove all rows called");
         int rowCount = tModel.getRowCount();
-        for(int i = (rowCount - 1); i > 1; i--)
+        System.out.println("There are " + rowCount + " rows");
+        for(int i = 1; i < rowCount+1; i++)
         {
             tModel.removeRow(i);
+            System.out.println("Removed row " + i);
         }
     }
 

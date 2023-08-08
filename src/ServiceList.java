@@ -50,6 +50,20 @@ public class ServiceList
         }
     }
 
+    public String searchByName(String name)
+    {
+        String positions = "";
+
+        for(int i = 0; i < allServices.size(); i++)
+        {
+            if(((allServices.get(i).sName).toUpperCase()).contains(name.toUpperCase()))
+            {
+                positions = positions + "," + i; // INVESTIGATE THIS ----------------------------------------------------
+            }
+        }
+        return positions;
+    }
+
     public static void main(String[] args)
     {
         try
