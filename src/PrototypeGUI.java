@@ -243,7 +243,7 @@ public class PrototypeGUI
         System.out.println("Remove all rows called");
         int rowCount = tModel.getRowCount();
         System.out.println("There are " + rowCount + " rows");
-        for(int i = 1; i < rowCount+1; i++)
+        for(int i = (rowCount - 1); i > -1; i--)
         {
             tModel.removeRow(i);
             System.out.println("Removed row " + i);
