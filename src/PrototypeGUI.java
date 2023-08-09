@@ -131,6 +131,7 @@ public class PrototypeGUI
 
     public void btnReadFile_Click()
     {
+        System.out.println("btnReadFile_Click() called");
         sL = new ServiceList();
         sL.readAllServices(saveFolder);
         removeAllRows();
@@ -167,11 +168,10 @@ public class PrototypeGUI
 
     public void btnSearch_Click()
     {
-        /*
         // Receive search term from popup
-        String searchTitle = JOptionPane.showInputDialog("Title to search?");
+        String searchName = JOptionPane.showInputDialog("Title to search?");
         // Initialise new temp song
-        Service tempService = new Service();
+        Service tempService;
         // Empty the table
         removeAllRows();
 
@@ -181,11 +181,11 @@ public class PrototypeGUI
         // This returned string is split by the commas separating the indexes, and each split string becomes an element of the returnedIndexes array
         // This is done in a try statement in case errors are thrown
         // The returned indexes are iterated through and for each the index is parsed as an integer
-        // Then the temp object is set as the object at that index in the allSongs array of the sL object
-        // This temp object is then passed into the add row procedure which adds it to the table
+        // Then set the temp object as the object at that index in the allSongs array of the sL object
+        // This passes the temp object into the add row procedure which adds it to the table
         // If an exception is thrown, then a popup appears saying that an error has occurred
         // If the returned string of indexes is empty then a popup appears stating this and all rows are added to the table
-        String returnedIndexes = sL.searchTitle(searchTitle);
+        String returnedIndexes = sL.searchByName(searchName);
         if(returnedIndexes != null)
         {
             try
@@ -194,8 +194,8 @@ public class PrototypeGUI
 
                 for(int i = 1; i < returnedIndexesSplit.length; i++)
                 {
-                    csTemp = sL.allSongs[Integer.parseInt(returnedIndexesSplit[i])];
-                    addRow(csTemp);
+                    tempService = sL.allServices.get(Integer.parseInt(returnedIndexesSplit[i]));
+                    addRow(tempService);
                 }
             }
             catch(Exception e)
@@ -208,7 +208,6 @@ public class PrototypeGUI
             JOptionPane.showMessageDialog(null, "Unable to find results for search", "Search Unsuccessful", JOptionPane.INFORMATION_MESSAGE);
             addAllRows();
         }
-    */
     }
 
     public void addRow(Service sTempAddRow)
@@ -222,13 +221,13 @@ public class PrototypeGUI
 
     public void addAllRows()
     {
-        int slNumOfSongs = sL.position;
+        System.out.println("addAllRows() called");
+        int slNumOfServices = sL.allServices.size();
         Service sTemp;
-        String[] tempElements = new String[3];
 
-        for(int i = 0; i < slNumOfSongs; i++)
+        for(int i = 0; i < slNumOfServices; i++)
         {
-            sTemp = sL.allServices[i];
+            sTemp = sL.allServices.get(i);
             addRow(sTemp);
         }
     }
@@ -241,10 +240,13 @@ public class PrototypeGUI
 
     public void removeAllRows()
     {
+        System.out.println("Remove all rows called");
         int rowCount = tModel.getRowCount();
-        for(int i = (rowCount - 1); i > 1; i--)
+        //System.out.println("There are " + rowCount + " rows");
+        for(int i = (rowCount - 1); i > -1; i--)
         {
             tModel.removeRow(i);
+            //System.out.println("Removed row " + i); //---------------------------------------------------------------Shows that row 0 is removed every time this method is run which shouldn't be the case
         }
     }
 

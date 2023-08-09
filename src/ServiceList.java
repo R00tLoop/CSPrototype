@@ -1,58 +1,47 @@
 import java.io.*;
-
+import java.util.*;
 public class ServiceList
 {
-    Service[] allServices = new Service[100];
-    int position = 0;
+    ArrayList<Service> allServices = new ArrayList<>();
 
+    /*
     public boolean addAccountToList(Service temp)
     {
-        // NEEDS REWORK!!!!! -----------------------------------------------------
-        boolean taken = false;
-        int i = 0;
-        System.out.println("The boolean taken is " + taken);
-        while(!taken && i < position)
+        System.out.println("addAccountToList() called. Temp.sName = " + temp.sName);
+        System.out.println("Current array is:");
+        for(int i = 0; i < allServices.size(); i++)
         {
-            System.out.println(allServices[i].sName + " ---- " + temp.sName);
-            if((allServices[i].sName).equals(temp.sName))
+            System.out.println("allServices(" + i + ") = " + allServices.get(i));
+        }
+        for(int i = 0; i < allServices.size(); i++)
+        {
+            System.out.println("Int i = " + i + ". allServices[i] = " + allServices.get(i));
+            if((allServices.get(i).sName).equals(temp.sName))
             {
-                taken = true;
-                break;
+                System.out.println("Service " + temp.sName  + " was taken in array. Size is " + allServices.size() + ". I is " + i);
+                return false;
             }
-            i++;
         }
-        if(!taken)
-        {
-            System.out.println("Wasn't taken");
-            allServices[position] = temp;
-            System.out.println("Added " + temp.sName  + " to position " + position);
-            position++;
-            return true;
-        }
-        else
-        {
-            System.out.println("Service " + temp.sName  + " was taken in array. Position is " + position);
-            return false;
-        }
+        allServices.add(temp);
+        System.out.println("Added " + temp.sName + ". Will now return true");
+        System.out.println("allServices[0] = " + allServices.get(0));
+        return true;
     }
+    */
 
-
-    //Read all names of files from directory
-    //For each of them, pass as parameter into load function
-    //Pass that object into the addAccountToList function
     // https://stackoverflow.com/questions/1844688/how-to-read-all-files-in-a-folder-from-java
 
     public void readAllServices(File folder)
     {
+        System.out.println("readAllServices() called");
         Service tempService = new Service();
         try
         {
             for (File thisFile : folder.listFiles()) {
                 tempService.load(thisFile);
-                if(!addAccountToList(tempService))
-                {
-                    System.out.println("Account already in list");
-                }
+                //System.out.println("Attempting to read " + thisFile + ". Has read name as " + tempService);
+                allServices.add(tempService);
+                tempService = new Service(); // This line fixed everything
             }
         }
         catch(Exception e)
@@ -61,7 +50,21 @@ public class ServiceList
         }
     }
 
-    public static void main(String[] args)
+    public String searchByName(String name)
+    {
+        String positions = "";
+
+        for(int i = 0; i < allServices.size(); i++)
+        {
+            if(((allServices.get(i).sName).toUpperCase()).contains(name.toUpperCase()))
+            {
+                positions = positions + "," + i; // INVESTIGATE THIS, begins with comma i.e. ",1,2,3,..."----------------------------------------------------
+            }
+        }
+        return positions;
+    }
+
+    public static void main(String[] args)// Remove later
     {
         try
         {

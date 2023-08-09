@@ -84,6 +84,7 @@ public class Service extends Entity
 
     public void load(File tempSaveFile)
     {
+        System.out.println("Loading " + tempSaveFile);
         try(BufferedReader br = new BufferedReader(new FileReader(tempSaveFile)))
         {
             int i = 0;
@@ -93,6 +94,8 @@ public class Service extends Entity
             sName = tempStringSplit[0];
             dID = tempStringSplit[1];
             vID = tempStringSplit[2];
+
+            System.out.println(sName + dID + vID);
 
             tempString = br.readLine();
 
@@ -110,7 +113,7 @@ public class Service extends Entity
         }
         catch(Exception e)
         {
-            System.out.println("Error thrown writing to file.");
+            System.out.println("Error thrown reading from file.");
         }
     }
 }
