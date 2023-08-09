@@ -39,7 +39,7 @@ public class ServiceList
         {
             for (File thisFile : folder.listFiles()) {
                 tempService.load(thisFile);
-                System.out.println("Attempting to read " + thisFile + ". Has read name as " + tempService);
+                //System.out.println("Attempting to read " + thisFile + ". Has read name as " + tempService);
                 allServices.add(tempService);
                 tempService = new Service(); // This line fixed everything
             }
@@ -58,13 +58,13 @@ public class ServiceList
         {
             if(((allServices.get(i).sName).toUpperCase()).contains(name.toUpperCase()))
             {
-                positions = positions + "," + i; // INVESTIGATE THIS ----------------------------------------------------
+                positions = positions + "," + i; // INVESTIGATE THIS, begins with comma i.e. ",1,2,3,..."----------------------------------------------------
             }
         }
         return positions;
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args)// Remove later
     {
         try
         {

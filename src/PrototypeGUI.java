@@ -171,7 +171,7 @@ public class PrototypeGUI
         // Receive search term from popup
         String searchName = JOptionPane.showInputDialog("Title to search?");
         // Initialise new temp song
-        Service tempService = new Service();
+        Service tempService;
         // Empty the table
         removeAllRows();
 
@@ -181,8 +181,8 @@ public class PrototypeGUI
         // This returned string is split by the commas separating the indexes, and each split string becomes an element of the returnedIndexes array
         // This is done in a try statement in case errors are thrown
         // The returned indexes are iterated through and for each the index is parsed as an integer
-        // Then the temp object is set as the object at that index in the allSongs array of the sL object
-        // This temp object is then passed into the add row procedure which adds it to the table
+        // Then set the temp object as the object at that index in the allSongs array of the sL object
+        // This passes the temp object into the add row procedure which adds it to the table
         // If an exception is thrown, then a popup appears saying that an error has occurred
         // If the returned string of indexes is empty then a popup appears stating this and all rows are added to the table
         String returnedIndexes = sL.searchByName(searchName);
@@ -223,7 +223,7 @@ public class PrototypeGUI
     {
         System.out.println("addAllRows() called");
         int slNumOfServices = sL.allServices.size();
-        Service sTemp = new Service();
+        Service sTemp;
 
         for(int i = 0; i < slNumOfServices; i++)
         {
@@ -242,11 +242,11 @@ public class PrototypeGUI
     {
         System.out.println("Remove all rows called");
         int rowCount = tModel.getRowCount();
-        System.out.println("There are " + rowCount + " rows");
+        //System.out.println("There are " + rowCount + " rows");
         for(int i = (rowCount - 1); i > -1; i--)
         {
             tModel.removeRow(i);
-            System.out.println("Removed row " + i);
+            //System.out.println("Removed row " + i); //---------------------------------------------------------------Shows that row 0 is removed every time this method is run which shouldn't be the case
         }
     }
 
