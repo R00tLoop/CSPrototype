@@ -25,7 +25,8 @@ public class PrototypeGUI
 
     JPanel mainPanel = new JPanel(null);
     //Main panel, contains components
-    JButton addSong = new JButton();
+    JPanel mapPanel = new JPanel(null);
+    JButton mapBtn = new JButton();
     JComboBox<String> cbxSortBy = new JComboBox<>(arrSortBy);
 
     JButton btnSort = new JButton();
@@ -76,6 +77,7 @@ public class PrototypeGUI
         //theTabs.addTab("Search Sort",mainPanel);
         //theTabs.addTab("Title",titlePanel);
         theTabs.addTab("Main", mainPanel);
+        theTabs.addTab("Map", mapPanel);
 
         prototypeWindow.setIconImage(new ImageIcon("Icons\\SpotLOGO.png").getImage());
 
@@ -117,11 +119,11 @@ public class PrototypeGUI
         btnReadFile.setText("Read from File");
         mainPanel.add(btnReadFile);
 
-        addSong.setLocation(650, 400);
-        addSong.setSize(150, 50);
-        addSong.addActionListener(e->btnAddSong_Click());
-        addSong.setText("Add song");
-        mainPanel.add(addSong);
+        mapBtn.setLocation(650, 400);
+        mapBtn.setSize(150, 50);
+        mapBtn.addActionListener(e->btnMap_Click());
+        mapBtn.setText("Map");
+        mainPanel.add(mapBtn);
 
         mainTable.setAutoCreateRowSorter(true);
         mainTableScroll.setSize(1000,350);
@@ -138,9 +140,9 @@ public class PrototypeGUI
         addAllRows();
     }
 
-    public void btnAddSong_Click()
+    public void btnMap_Click()
     {
-
+        theTabs.setSelectedComponent(mapPanel);
     }
 
     public void btnSort_Click()
