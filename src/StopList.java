@@ -10,7 +10,8 @@ public class StopList
         Stop tempStop = new Stop();
         try
         {
-            for (File thisFile : folder.listFiles()) {
+            for (File thisFile : Objects.requireNonNull(folder.listFiles())) // Avoids nullPointerException with folder.listFiles() function
+            {
                 tempStop.load(thisFile);
                 //System.out.println("Attempting to read " + thisFile + ". Has read name as " + tempService);
                 allStops.add(tempStop);

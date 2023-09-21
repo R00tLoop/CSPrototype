@@ -37,7 +37,8 @@ public class ServiceList
         Service tempService = new Service();
         try
         {
-            for (File thisFile : folder.listFiles()) {
+            for (File thisFile : Objects.requireNonNull(folder.listFiles())) // To avoid nullPointerException with folder.listFiles() function
+            {
                 tempService.load(thisFile);
                 //System.out.println("Attempting to read " + thisFile + ". Has read name as " + tempService);
                 allServices.add(tempService);

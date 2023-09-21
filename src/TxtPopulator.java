@@ -42,6 +42,6 @@ public class TxtPopulator
 
 
         s.newSaveFile(s.sName);
-        s.save(3);
+        s.save();
     }
 }

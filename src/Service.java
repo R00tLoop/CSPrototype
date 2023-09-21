@@ -13,7 +13,7 @@ public class Service extends Entity
     //Initial information
     //Stop, time /n Stop, time /n ...
 
-    public static void main(String[] args)
+    public static void main(String[] args) // Remove after -------------------
     {
         Service s = new Service();
         s.load(s.getSaveFile("T12"));
@@ -63,7 +63,7 @@ public class Service extends Entity
         return(sName+","+dID+","+vID);
     }
 
-    public void save(int stopCount)
+    public void save()
     {
         try(FileWriter fw = new FileWriter(getSaveFile(sName))) // Try-with-resources
         {
