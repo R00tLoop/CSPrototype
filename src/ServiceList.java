@@ -64,7 +64,7 @@ public class ServiceList
         return positions;
     }
 
-    public static void main(String[] args)// Remove later
+    public static void main(String[] args)// Remove later -----------------------------------------------
     {
         try
         {
