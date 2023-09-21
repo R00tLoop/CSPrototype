@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Stop extends Entity
 {
     String stName = "";
-    ArrayList<String> Services = new ArrayList<>();
+    ArrayList<Service> allServices = new ArrayList<>();
     String[] location = new String[2];
 
     public void load(File tempSaveFile)
@@ -14,10 +14,12 @@ public class Stop extends Entity
         {
             stName = br.readLine();
             String tempString = br.readLine();
+            Service tempService = new Service();
 
             while(tempString != null)
             {
-                Services.add(tempString);
+                tempService.load(getSaveFile(tempString));
+                allServices.add(tempService);
                 tempString = br.readLine();
             }
         }
