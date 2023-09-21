@@ -63,16 +63,17 @@ public class Service extends Entity
         return(sName+","+dID+","+vID);
     }
 
-    public void save()
+    public void save(int stopCount)
     {
         try(FileWriter fw = new FileWriter(getSaveFile(sName))) // Try-with-resources
         {
             fw.write(toString());
+            fw.write("\r\n");
 
             //Iterates through 2d array writing
             for(int i = 0; i < stopCount; i++)
             {
-                fw.write(stopTimes[i][0] + stopTimes[i][1]);
+                fw.write(stopTimes[i][0] + "," + stopTimes[i][1]);
                 fw.write("\r\n");
             }
         }
