@@ -44,6 +44,7 @@ public class PrototypeGUI
     JLabel banner3 = new JLabel();
     JLabel banner4 = new JLabel();
     JLabel banner5 = new JLabel();
+    JLabel exampleMap = new JLabel();
 
     JButton twitterBtn = new JButton();
     JButton twitterBtn_3 = new JButton();
@@ -52,8 +53,10 @@ public class PrototypeGUI
     JTextField searchBar = new JTextField();
     JButton serviceUpdates = new JButton();
 
-    JTextField stLocation = new JTextField();
-    JTextField stLocation_9 = new JTextField();
+    String[] stCombo_data = {"Stop A", "Stop B", "Stop C", "Stop D", "Stop E", "Stop F"};
+    String[] stCombo_9_data = {"Stop A", "Stop B", "Stop C", "Stop D", "Stop E", "Stop F"};
+    JComboBox<String> stLocation = new JComboBox<>(stCombo_data);
+    JComboBox<String> stLocation_9 = new JComboBox<>(stCombo_9_data);
 
     String[] jpCombo_data={"Depart at","Arrive by"};
     JComboBox<String> jpCombo = new JComboBox<>(jpCombo_data);
@@ -127,13 +130,22 @@ public class PrototypeGUI
             mainPanel.add(labelImg1);
             ImageIcon twit1 = new ImageIcon("resources/twit2.png");
             ImageIcon face1 = new ImageIcon("resources/face2.png");
+            ImageIcon exMap = new ImageIcon("resources/exMap.png");
+            ImageIcon sb = new ImageIcon("resources/sb.png");
             twitterBtn = new JButton(twit1);
             twitterBtn_3 = new JButton(face1);
+            exampleMap = new JLabel(exMap);
+            btnPlanJourney = new JButton(sb);
+            btnSearch = new JButton(sb);
         }
         catch(Exception e)
         {
             System.out.println("Adding image didnt work :(");
         }
+
+        exampleMap.setLocation(200, 49);
+        exampleMap.setSize(800, 687);
+        mainPanel.add(exampleMap);
 
         twitterBtn.setLocation(700,10);
         twitterBtn.setSize(30,30);
@@ -167,12 +179,10 @@ public class PrototypeGUI
 
         stLocation.setLocation(10,90);
         stLocation.setSize(180,25);
-        stLocation.setText("Start Location");
         mainPanel.add(stLocation);
 
         stLocation_9.setLocation(10,135);
         stLocation_9.setSize(180,25);
-        stLocation_9.setText("Finish Location");
         mainPanel.add(stLocation_9);
 
         jpCombo.setLocation(10,185);
@@ -181,14 +191,19 @@ public class PrototypeGUI
         mainPanel.add(jpCombo);
 
         timeTF.setLocation(100,185);
-        timeTF.setSize(90,25);
+        timeTF.setSize(50,25);
         mainPanel.add(timeTF);
+
+        btnPlanJourney.setLocation(160, 185);
+        btnPlanJourney.setSize(25, 25);
+        btnPlanJourney.addActionListener(e->btnPlanJourney_Click());
+        btnPlanJourney.setBackground( new Color(-1));
+        mainPanel.add(btnPlanJourney);
 
         btnSearch.setLocation(260,54);
         btnSearch.setSize(20,20);
         btnSearch.addActionListener(e->btnSearch_Click());
         btnSearch.setBackground( new Color(-1));
-        btnSearch.setText("Q");
         mainPanel.add(btnSearch);
 
         mainTable.setAutoCreateRowSorter(true);
@@ -281,11 +296,7 @@ public class PrototypeGUI
         addSong.setText("View map");
         mainPanel.add(addSong);
 
-        btnPlanJourney.setLocation(850, 400);
-        btnPlanJourney.setSize(150, 50);
-        btnPlanJourney.addActionListener(e->btnPlanJourney_Click());
-        btnPlanJourney.setText("Plan a Journey");
-        mainPanel.add(btnPlanJourney);
+
 
 
     }*/
@@ -354,8 +365,8 @@ public class PrototypeGUI
 
     public void btnPlanJourney_Click()
     {
-        initPlanJourney();
-        theTabs.setSelectedComponent(planJourneyPanel);
+        String start = (String) stLocation.getSelectedItem();
+        String finish = (String) stLocation_9.getSelectedItem();
     }
 
     public void btnReadFile_Click()
@@ -399,7 +410,8 @@ public class PrototypeGUI
     public void btnSearch_Click()
     {
         // Receive search term from popup
-        String searchName = JOptionPane.showInputDialog("Title to search?");
+        //String searchName = JOptionPane.showInputDialog("Title to search?");
+        String searchName = searchBar.getText();
         // Initialise new temp song
         Service tempService;
         // Empty the table
@@ -460,12 +472,6 @@ public class PrototypeGUI
             sTemp = sL.allServices.get(i);
             addRow(sTemp);
         }
-    }
-
-    public void btnResetTable_Click()
-    {
-        removeAllRows();
-        addAllRows();
     }
 
     public void removeAllRows()
