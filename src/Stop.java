@@ -37,9 +37,9 @@ public class Stop extends Entity
             fw.write("\r\n");
 
             //Iterates through arrayList
-            for(String s : Services)
+            for(Service s : allServices)
             {
-                fw.write(s);
+                fw.write(s.sName);
                 fw.write("\r\n");
             }
         }

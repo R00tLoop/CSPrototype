@@ -3,7 +3,10 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.io.*;
-
+import java.awt.image.*;
+import javax.imageio.*;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 public class PrototypeGUI
 {
     File saveFolder = new File("Saves\\Services\\");
@@ -24,6 +27,8 @@ public class PrototypeGUI
     String[] arrSortBy = new String[] {"Name"};
 
     JPanel mainPanel = new JPanel(null);
+    JPanel mapPanel = new JPanel(null);
+    JPanel planJourneyPanel = new JPanel(null);
     //Main panel, contains components
     JButton addSong = new JButton();
     JComboBox<String> cbxSortBy = new JComboBox<>(arrSortBy);
@@ -32,6 +37,27 @@ public class PrototypeGUI
     JButton btnSearch = new JButton();
     JButton btnRefreshTable = new JButton();
     JButton btnReadFile = new JButton();
+    JButton btnPlanJourney = new JButton();
+
+    JLabel banner = new JLabel();
+    JLabel banner2 = new JLabel();
+    JLabel banner3 = new JLabel();
+    JLabel banner4 = new JLabel();
+    JLabel banner5 = new JLabel();
+
+    JButton twitterBtn = new JButton();
+    JButton twitterBtn_3 = new JButton();
+    JButton website = new JButton();
+
+    JTextField searchBar = new JTextField();
+    JButton serviceUpdates = new JButton();
+
+    JTextField stLocation = new JTextField();
+    JTextField stLocation_9 = new JTextField();
+
+    String[] jpCombo_data={"Depart at","Arrive by"};
+    JComboBox<String> jpCombo = new JComboBox<>(jpCombo_data);
+    JTextField timeTF = new JTextField();
 
     //Table stuff
     String[] headings = {"Name", "Driver ID", "Vehicle ID"};
@@ -48,22 +74,22 @@ public class PrototypeGUI
         // Sets a layout for the JFrame
         prototypeWindow.setLayout(null);
         //Makes the tabs not appear (they're above the visible portion of the frame)
-        theTabs.setSize(1200, 765);
-        theTabs.setLocation(0, -50);
+        theTabs.setSize(1000, 765);
+        theTabs.setLocation(0, -22);
         // Adds the tabbed pane to the JFrame
         prototypeWindow.add(theTabs);
 
         // Makes the program quit upon GUI closure
         prototypeWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Set the size of the window
-        prototypeWindow.setSize(1200,765);
+        prototypeWindow.setSize(1000,700);
 
         // Call initialisation methods to initialise the components and add them to panels
         //initLoginComps();
         //initComponents();
         //initComponentsTwo();
         //initCAComps();
-        initMainComps();
+        initMainComps2();
 
         //loginPanel.setBackground(Color.WHITE);
         //newAccPanel.setBackground(Color.WHITE);
@@ -76,6 +102,8 @@ public class PrototypeGUI
         //theTabs.addTab("Search Sort",mainPanel);
         //theTabs.addTab("Title",titlePanel);
         theTabs.addTab("Main", mainPanel);
+        theTabs.addTab("Map", mapPanel);
+        theTabs.addTab("Plan Journey", planJourneyPanel);
 
         prototypeWindow.setIconImage(new ImageIcon("Icons\\SpotLOGO.png").getImage());
 
@@ -85,7 +113,137 @@ public class PrototypeGUI
         prototypeWindow.setVisible(true);
     }
 
-    public void initMainComps()
+    public void initMainComps2()
+    {
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+
+        try
+        {
+            ImageIcon img1 = new ImageIcon("resources/Lloyds-Footer-Logo.png");
+            JLabel labelImg1 = new JLabel();
+            labelImg1.setIcon(img1);
+            labelImg1.setLocation(0,-10);
+            labelImg1.setSize(250,70);
+            mainPanel.add(labelImg1);
+            ImageIcon twit1 = new ImageIcon("resources/twit2.png");
+            ImageIcon face1 = new ImageIcon("resources/face2.png");
+            twitterBtn = new JButton(twit1);
+            twitterBtn_3 = new JButton(face1);
+        }
+        catch(Exception e)
+        {
+            System.out.println("Adding image didnt work :(");
+        }
+
+        twitterBtn.setLocation(700,10);
+        twitterBtn.setSize(30,30);
+        twitterBtn.addActionListener(e->twitterBtn_Click());
+        mainPanel.add(twitterBtn);
+
+        twitterBtn_3.setLocation(750,10);
+        twitterBtn_3.setSize(30,30);
+        twitterBtn_3.addActionListener(e->twitterBtn_3_Click());
+        mainPanel.add(twitterBtn_3);
+
+        searchBar.setLocation(5,54);
+        searchBar.setSize(250,20);
+        searchBar.setText("Search");
+        mainPanel.add(searchBar);
+
+        serviceUpdates.setLocation(690,54);
+        serviceUpdates.setSize(200,20);
+        serviceUpdates.addActionListener(e->serviceUpdates_Click());
+        serviceUpdates.setBackground( new Color(-1));
+        serviceUpdates.setText("See Service Updates");
+        serviceUpdates.setBorder(blackline);
+        mainPanel.add(serviceUpdates);
+
+        website.setLocation(800,12);
+        website.setSize(85,25);
+        website.setBackground( new Color(-1));
+        website.addActionListener(e->website_Click());
+        website.setText("Website");
+        mainPanel.add(website);
+
+        stLocation.setLocation(10,90);
+        stLocation.setSize(180,25);
+        stLocation.setText("Start Location");
+        mainPanel.add(stLocation);
+
+        stLocation_9.setLocation(10,135);
+        stLocation_9.setSize(180,25);
+        stLocation_9.setText("Finish Location");
+        mainPanel.add(stLocation_9);
+
+        jpCombo.setLocation(10,185);
+        jpCombo.setSize(80,25);
+        jpCombo.setEditable(false );
+        mainPanel.add(jpCombo);
+
+        timeTF.setLocation(100,185);
+        timeTF.setSize(90,25);
+        mainPanel.add(timeTF);
+
+        btnSearch.setLocation(260,54);
+        btnSearch.setSize(20,20);
+        btnSearch.addActionListener(e->btnSearch_Click());
+        btnSearch.setBackground( new Color(-1));
+        btnSearch.setText("Q");
+        mainPanel.add(btnSearch);
+
+        mainTable.setAutoCreateRowSorter(true);
+        mainTableScroll.setSize(190,455);
+        mainTableScroll.setLocation(5,220);
+        mainPanel.add(mainTableScroll);
+
+        banner.setLocation(0,0);
+        banner.setSize(1000,50);
+        banner.setForeground( new Color(-1) );
+        banner.setOpaque(true);
+        banner.setBackground( new Color(-65536) );
+        banner.setText("");
+        banner.setBorder(blackline);
+        mainPanel.add(banner);
+
+        banner2.setLocation(0,49);
+        banner2.setSize(1000,30);
+        banner2.setOpaque(true);
+        banner2.setBackground( new Color(-2) );
+        banner2.setText("");
+        banner2.setBorder(blackline);
+        mainPanel.add(banner2);
+
+        banner3.setLocation(0,78);
+        banner3.setSize(200,100);
+        banner3.setOpaque(true);
+        banner3.setBackground( new Color(-1) );
+        banner3.setText("");
+        banner3.setBorder(blackline);
+        mainPanel.add(banner3);
+
+        banner4.setLocation(0,177);
+        banner4.setSize(200,40);
+        banner4.setOpaque(true);
+        banner4.setBackground( new Color(-1) );
+        banner4.setText("");
+        banner4.setBorder(blackline);
+        mainPanel.add(banner4);
+
+        banner5.setLocation(0,216);
+        banner5.setSize(200,455);
+        banner5.setOpaque(true);
+        banner5.setBackground( new Color(-1) );
+        banner5.setText("");
+        banner5.setBorder(blackline);
+        mainPanel.add(banner5);
+
+        sL = new ServiceList();
+        sL.readAllServices(saveFolder);
+        removeAllRows();
+        addAllRows();
+    }
+
+    /*public void initMainComps()
     {
         // Further initialisations
 
@@ -115,18 +273,89 @@ public class PrototypeGUI
         btnReadFile.setSize(550,50);
         btnReadFile.addActionListener(e->btnReadFile_Click());
         btnReadFile.setText("Read from File");
-        mainPanel.add(btnReadFile);
+        //mainPanel.add(btnReadFile);
 
         addSong.setLocation(650, 400);
         addSong.setSize(150, 50);
         addSong.addActionListener(e->btnAddSong_Click());
-        addSong.setText("Add song");
+        addSong.setText("View map");
         mainPanel.add(addSong);
 
-        mainTable.setAutoCreateRowSorter(true);
-        mainTableScroll.setSize(1000,350);
-        mainTableScroll.setLocation(30,30);
-        mainPanel.add(mainTableScroll);
+        btnPlanJourney.setLocation(850, 400);
+        btnPlanJourney.setSize(150, 50);
+        btnPlanJourney.addActionListener(e->btnPlanJourney_Click());
+        btnPlanJourney.setText("Plan a Journey");
+        mainPanel.add(btnPlanJourney);
+
+
+    }*/
+
+    public void initMap()
+    {
+
+    }
+
+    public void twitterBtn_Click()
+    {
+        try {
+            String myUrl = "https://twitter.com/LloydsCoaches?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor";
+
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(myUrl));
+        }
+        catch(Exception e)
+        {
+            System.out.println("Failed to reach website");
+        }
+    }
+
+    public void twitterBtn_3_Click()
+    {
+        try
+        {
+            String myUrl = "https://www.facebook.com/LloydsCoaches/?locale=en_GB";
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(myUrl));;
+        }
+        catch(Exception e)
+        {
+            System.out.println("Failed to reach website");
+        }
+    }
+
+    public void website_Click()
+    {
+        try
+        {
+            String myUrl = "https://lloydscoaches.com/";
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(myUrl));;
+        }
+        catch(Exception e)
+        {
+            System.out.println("Failed to reach website");
+        }
+    }
+
+    public void serviceUpdates_Click()
+    {
+        try
+        {
+            String myUrl = "https://lloydscoaches.com/serviceupdates/";
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(myUrl));;
+        }
+        catch(Exception e)
+        {
+            System.out.println("Failed to reach website");
+        }
+    }
+
+    public void initPlanJourney()
+    {
+
+    }
+
+    public void btnPlanJourney_Click()
+    {
+        initPlanJourney();
+        theTabs.setSelectedComponent(planJourneyPanel);
     }
 
     public void btnReadFile_Click()
@@ -140,7 +369,8 @@ public class PrototypeGUI
 
     public void btnAddSong_Click()
     {
-
+        initMap();
+        theTabs.setSelectedComponent(mapPanel);
     }
 
     public void btnSort_Click()
