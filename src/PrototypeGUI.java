@@ -1,10 +1,7 @@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.io.*;
-import java.awt.image.*;
-import javax.imageio.*;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 public class PrototypeGUI
@@ -324,7 +321,7 @@ public class PrototypeGUI
         try
         {
             String myUrl = "https://www.facebook.com/LloydsCoaches/?locale=en_GB";
-            java.awt.Desktop.getDesktop().browse(java.net.URI.create(myUrl));;
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(myUrl));
         }
         catch(Exception e)
         {
@@ -337,7 +334,7 @@ public class PrototypeGUI
         try
         {
             String myUrl = "https://lloydscoaches.com/";
-            java.awt.Desktop.getDesktop().browse(java.net.URI.create(myUrl));;
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(myUrl));
         }
         catch(Exception e)
         {
@@ -350,7 +347,7 @@ public class PrototypeGUI
         try
         {
             String myUrl = "https://lloydscoaches.com/serviceupdates/";
-            java.awt.Desktop.getDesktop().browse(java.net.URI.create(myUrl));;
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(myUrl));
         }
         catch(Exception e)
         {
