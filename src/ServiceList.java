@@ -4,6 +4,12 @@ public class ServiceList
 {
     ArrayList<Service> allServices = new ArrayList<>();
 
+    ArrayList<String> serviceTimes = new ArrayList<>();
+    Service tempService = new Service();
+
+    Stop tempStop = new Stop();
+
+    StopList tempStopList = new StopList();
     /*
     public boolean addAccountToList(Service temp)
     {
@@ -30,6 +36,7 @@ public class ServiceList
     */
 
     // https://stackoverflow.com/questions/1844688/how-to-read-all-files-in-a-folder-from-java
+
 
     public void readAllServices(File folder)
     {
@@ -64,6 +71,20 @@ public class ServiceList
         }
         return positions;
     }
+    public void servicesFrom(String tempStopName)
+    {
+        File file = new File("Saves\\Stops\\StopList1.txt");
+        tempStopList.load(file);
+        System.out.println("Read all stops");
+        String indexes = tempStopList.searchByName(tempStopName);
+        System.out.println("Searched for stuff, found this: " + indexes);
+        String[] split = indexes.split(",");
+        System.out.println("Split that up");
+        int index = Integer.parseInt(split[1]);
+        tempStop = tempStopList.allStops.get(index);
+        serviceTimes = tempStop.serviceTimes;
+    }
+
 
     public static void main(String[] args)// Remove later -----------------------------------------------
     {

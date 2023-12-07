@@ -5,6 +5,8 @@ public class Stop extends Entity
 {
     String stName = "";
     ArrayList<Service> allServices = new ArrayList<>();
+
+    ArrayList<String> serviceTimes = new ArrayList<>();
     String[] location = new String[2];
 
     public void load(File tempSaveFile)
@@ -73,5 +75,11 @@ public class Stop extends Entity
         {
             System.out.println("Error generating save file.");
         }
+    }
+
+    public void loadFromName(String name)
+    {
+        File file = getSaveFile(name);
+        load(file);
     }
 }

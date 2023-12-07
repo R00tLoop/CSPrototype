@@ -10,8 +10,11 @@ public class PrototypeGUI
     JFrame prototypeWindow = new JFrame();
     //JFrame declaration, highest level of GUI
 
-    ServiceList sL = new ServiceList();
-    Service s = new Service();
+    Stop tempStop = new Stop();
+    StopList tempStopList = new StopList();
+
+    ServiceList tempServiceList = new ServiceList();
+    Service tempService = new Service();
     //Objects to work with inside GUI processes
 
     JTabbedPane theTabs = new JTabbedPane();
@@ -50,8 +53,8 @@ public class PrototypeGUI
     JTextField searchBar = new JTextField();
     JButton serviceUpdates = new JButton();
 
-    String[] stCombo_data = {"Stop A", "Stop B", "Stop C", "Stop D", "Stop E", "Stop F"};
-    String[] stCombo_9_data = {"Stop A", "Stop B", "Stop C", "Stop D", "Stop E", "Stop F"};
+    String[] stCombo_data = {"Start", "Stop A", "Stop B", "Stop C", "Stop D", "Stop E", "Stop F"};
+    String[] stCombo_9_data = {"Destination", "Stop A", "Stop B", "Stop C", "Stop D", "Stop E", "Stop F"};
     JComboBox<String> stLocation = new JComboBox<>(stCombo_data);
     JComboBox<String> stLocation_9 = new JComboBox<>(stCombo_9_data);
 
@@ -60,7 +63,7 @@ public class PrototypeGUI
     JTextField timeTF = new JTextField();
 
     //Table stuff
-    String[] headings = {"Name", "Driver ID", "Vehicle ID"};
+    String[] headings = {"Name", "Time", "Until"};
     //Array of table headings to give table model
     DefaultTableModel tModel = new DefaultTableModel(headings, 0);
     //Declare default table model
@@ -249,8 +252,8 @@ public class PrototypeGUI
         banner5.setBorder(blackline);
         mainPanel.add(banner5);
 
-        sL = new ServiceList();
-        sL.readAllServices(saveFolder);
+        tempServiceList = new ServiceList();
+        tempServiceList.readAllServices(saveFolder);
         removeAllRows();
         addAllRows();
     }
@@ -362,15 +365,28 @@ public class PrototypeGUI
 
     public void btnPlanJourney_Click()
     {
-        String start = (String) stLocation.getSelectedItem();
+        //Question mark button method
+        //System.out.println("btnPlanJourney_Click() method called");
+        String start = "";
+        start = (String) stLocation.getSelectedItem();
         String finish = (String) stLocation_9.getSelectedItem();
+        if(finish == "Destination")
+        {
+            System.out.println("Trying to work with start string:" + start);
+            tempServiceList.servicesFrom(start);
+            for(String s : tempServiceList.serviceTimes)
+            {
+                String[] split = s.split(",");
+                addRow(split[0], split[1], "");
+            }
+        }
     }
 
     public void btnReadFile_Click()
     {
         System.out.println("btnReadFile_Click() called");
-        sL = new ServiceList();
-        sL.readAllServices(saveFolder);
+        tempServiceList = new ServiceList();
+        tempServiceList.readAllServices(saveFolder);
         removeAllRows();
         addAllRows();
     }
@@ -406,6 +422,7 @@ public class PrototypeGUI
 
     public void btnSearch_Click()
     {
+        System.out.println("btnSearch_Click() method called");
         // Receive search term from popup
         //String searchName = JOptionPane.showInputDialog("Title to search?");
         String searchName = searchBar.getText();
@@ -424,7 +441,7 @@ public class PrototypeGUI
         // This passes the temp object into the add row procedure which adds it to the table
         // If an exception is thrown, then a popup appears saying that an error has occurred
         // If the returned string of indexes is empty then a popup appears stating this and all rows are added to the table
-        String returnedIndexes = sL.searchByName(searchName);
+        String returnedIndexes = tempServiceList.searchByName(searchName);
         if(returnedIndexes != null)
         {
             try
@@ -433,8 +450,8 @@ public class PrototypeGUI
 
                 for(int i = 1; i < returnedIndexesSplit.length; i++)
                 {
-                    tempService = sL.allServices.get(Integer.parseInt(returnedIndexesSplit[i]));
-                    addRow(tempService);
+                    tempService = tempServiceList.allServices.get(Integer.parseInt(returnedIndexesSplit[i]));
+                    addRow(tempService.sName, tempService.dID, tempService.vID);
                 }
             }
             catch(Exception e)
@@ -449,25 +466,25 @@ public class PrototypeGUI
         }
     }
 
-    public void addRow(Service sTempAddRow)
+    public void addRow(String c1, String c2, String c3)
     {
         String[] tempElements = new String[3];
-        tempElements[0] = sTempAddRow.sName;
-        tempElements[1] = sTempAddRow.dID;
-        tempElements[2] = sTempAddRow.vID;
+        tempElements[0] = c1;
+        tempElements[1] = c2;
+        tempElements[2] = c3;
         tModel.addRow(tempElements);
     }
 
     public void addAllRows()
     {
         System.out.println("addAllRows() called");
-        int slNumOfServices = sL.allServices.size();
+        int slNumOfServices = tempServiceList.allServices.size();
         Service sTemp;
 
         for(int i = 0; i < slNumOfServices; i++)
         {
-            sTemp = sL.allServices.get(i);
-            addRow(sTemp);
+            sTemp = tempServiceList.allServices.get(i);
+            addRow(sTemp.sName, sTemp.dID, sTemp.vID);
         }
     }
 
