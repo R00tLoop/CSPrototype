@@ -33,6 +33,7 @@ public class StopList
 
         for(int i = 0; i < allStops.size(); i++)
         {
+            System.out.println("Searching " + i + " " + allStops.get(i).stName + " against " + name);
             if(((allStops.get(i).stName).toUpperCase()).contains(name.toUpperCase()))
             {
                 System.out.println("i");
