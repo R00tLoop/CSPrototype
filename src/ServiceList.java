@@ -73,14 +73,17 @@ public class ServiceList
     }
     public void servicesFrom(String tempStopName)
     {
+        //Clear stopList obj
+        tempStopList = new StopList();
+        //Declare file to search (change this later) -------------------------------------------------------------
         File file = new File("Saves\\Stops\\StopList1.txt");
+        //Load that file into the stopList object
         tempStopList.load(file);
-        System.out.println("Read all stops");
-        String indexes = tempStopList.searchByName(tempStopName);
-        System.out.println("Searched for stuff, found this: " + indexes);
-        String[] split = indexes.split(",");
-        System.out.println("Split that up");
-        int index = Integer.parseInt(split[1]);
+        //Use this to avoid clunky method searching by name, maybe rework that later --------------------------------------------
+        tempStop.stName = tempStopName;
+        int index = tempStopList.searchByStop(tempStop);
+        //Clear tempStop object (precaution)
+        tempStop = new Stop();
         tempStop = tempStopList.allStops.get(index);
         serviceTimes = tempStop.serviceTimes;
     }

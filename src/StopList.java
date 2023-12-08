@@ -63,6 +63,7 @@ public class StopList
                 }
                 allStops.add(tempStop);
                 System.out.println("Read a stop:" + tempStop.stName);
+                tempStop = new Stop();
                 oneLine = br.readLine();
             }
         }
@@ -77,10 +78,10 @@ public class StopList
         int rtrn = -1;
         for(int i = 0; i < allStops.size(); i++)
         {
-            if(stop.stName.equalsIgnoreCase(allStops.get(i).stName))
-            {
-                rtrn = i;
-            }
+                if (stop.stName.equalsIgnoreCase(allStops.get(i).stName))
+                {
+                    rtrn = i;
+                }
         }
         return rtrn;
     }

@@ -255,7 +255,7 @@ public class PrototypeGUI
         tempServiceList = new ServiceList();
         tempServiceList.readAllServices(saveFolder);
         removeAllRows();
-        addAllRows();
+        //addAllRows();
     }
 
     /*public void initMainComps()
@@ -370,7 +370,8 @@ public class PrototypeGUI
         String start = "";
         start = (String) stLocation.getSelectedItem();
         String finish = (String) stLocation_9.getSelectedItem();
-        if(finish == "Destination")
+        assert finish != null; // ---------------------------------------------------------- Useful, start using more
+        if(finish.equals("Destination"))
         {
             System.out.println("Trying to work with start string:" + start);
             tempServiceList.servicesFrom(start);
@@ -475,7 +476,7 @@ public class PrototypeGUI
         tModel.addRow(tempElements);
     }
 
-    public void addAllRows()
+    public void addAllRows() // ------------------------------------------------------------------ With old table structure
     {
         System.out.println("addAllRows() called");
         int slNumOfServices = tempServiceList.allServices.size();
