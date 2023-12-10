@@ -1,0 +1,7 @@
+Stop A,StopList1
+Stop B,StopList1
+Stop C,StopList1
+Stop D,StopList2
+Stop E,StopList2
+Stop F,StopList3
+Stop G,StopList3

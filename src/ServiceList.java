@@ -75,10 +75,8 @@ public class ServiceList
     {
         //Clear stopList obj
         tempStopList = new StopList();
-        //Declare file to search (change this later) -------------------------------------------------------------
-        File file = new File("Saves\\Stops\\StopList1.txt");
         //Load that file into the stopList object
-        tempStopList.load(file);
+        tempStopList.load(tempStopList.getRegionFile(tempStopName));
         //Use this to avoid clunky method searching by name, maybe rework that later --------------------------------------------
         tempStop.stName = tempStopName;
         int index = tempStopList.searchByStop(tempStop);

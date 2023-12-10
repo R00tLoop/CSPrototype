@@ -2,6 +2,9 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.io.*;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 public class PrototypeGUI
@@ -9,6 +12,8 @@ public class PrototypeGUI
     File saveFolder = new File("Saves\\Services\\");
     JFrame prototypeWindow = new JFrame();
     //JFrame declaration, highest level of GUI
+
+    ArrayList<String[]> tableContents = new ArrayList<>();
 
     Stop tempStop = new Stop();
     StopList tempStopList = new StopList();
@@ -367,6 +372,7 @@ public class PrototypeGUI
     {
         //Question mark button method
         //System.out.println("btnPlanJourney_Click() method called");
+        removeAllRows();
         String start = "";
         start = (String) stLocation.getSelectedItem();
         String finish = (String) stLocation_9.getSelectedItem();
@@ -378,7 +384,48 @@ public class PrototypeGUI
             for(String s : tempServiceList.serviceTimes)
             {
                 String[] split = s.split(",");
-                addRow(split[0], split[1], "");
+                update(split[0], split[1]);
+            }
+        }
+    }
+
+    public void update(String queryVarName, String queryVarTime)
+    {
+        if(queryVarTime!=null)
+        {
+            LocalTime paramTime = LocalTime.parse(queryVarTime);
+            LocalTime currentTime = LocalTime.now();
+            if (paramTime.isAfter(currentTime)) {
+                long minsUntil = currentTime.until(paramTime, ChronoUnit.MINUTES);
+                int minsUntilInt = (int) minsUntil;
+                if (minsUntilInt > 60) {
+                    long hoursUntil = currentTime.until(paramTime, ChronoUnit.HOURS);
+                    minsUntilInt = minsUntilInt % 60;
+                    addRow(queryVarName, queryVarTime, String.valueOf(hoursUntil) + "hrs " + minsUntilInt + "mins");
+                } else {
+                    addRow(queryVarName, queryVarTime, String.valueOf(minsUntil) + "mins");
+                }
+            }
+        }
+    }
+
+    public void updateTimes()
+    {
+        removeAllRows();
+        for(String[] s : tableContents)
+        {
+            LocalTime paramTime = LocalTime.parse(s[1]);
+            LocalTime currentTime = LocalTime.now();
+            if (paramTime.isAfter(currentTime)) {
+                long minsUntil = currentTime.until(paramTime, ChronoUnit.MINUTES);
+                int minsUntilInt = (int) minsUntil;
+                if (minsUntilInt > 60) {
+                    long hoursUntil = currentTime.until(paramTime, ChronoUnit.HOURS);
+                    minsUntilInt = minsUntilInt % 60;
+                    addRow(s[0], s[1], String.valueOf(hoursUntil) + "hrs " + minsUntilInt + "mins");
+                } else {
+                    addRow(s[0], s[1], String.valueOf(minsUntil) + "mins");
+                }
             }
         }
     }
@@ -473,6 +520,7 @@ public class PrototypeGUI
         tempElements[0] = c1;
         tempElements[1] = c2;
         tempElements[2] = c3;
+        tableContents.add(tempElements);
         tModel.addRow(tempElements);
     }
 
@@ -491,7 +539,8 @@ public class PrototypeGUI
 
     public void removeAllRows()
     {
-        System.out.println("Remove all rows called");
+        //System.out.println("Remove all rows called");
+        tableContents = new ArrayList<>();
         int rowCount = tModel.getRowCount();
         //System.out.println("There are " + rowCount + " rows");
         for(int i = (rowCount - 1); i > -1; i--)
@@ -501,9 +550,11 @@ public class PrototypeGUI
         }
     }
 
+    /*
     public static void main(String[] args)
     {
         PrototypeGUI pGUI = new PrototypeGUI();
         pGUI.initFrame();
     }
+     */
 }

@@ -73,6 +73,32 @@ public class StopList
         }
     }
 
+    public File getRegionFile(String name)// ----------------------------------------------------- Not very resilient code
+    {
+        String fileName = "";
+        String readLine;
+        try(BufferedReader bR = new BufferedReader(new FileReader(new File("Saves\\Stops\\StopRegions.txt"))))
+        {
+            readLine = bR.readLine();
+            while(readLine!=null && fileName == "")
+            {
+                System.out.println("Line read in = " + readLine);
+                String[] split = readLine.split(",");
+                if(name.equals(split[0]))
+                {
+                    fileName = split[1];
+                    System.out.println("fileName = " + fileName);
+                }
+                readLine = bR.readLine();
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println("Region file not found");
+        }
+        return new File("Saves//Stops//" + fileName + ".txt");
+    }
+
     public int searchByStop(Stop stop)
     {
         int rtrn = -1;
