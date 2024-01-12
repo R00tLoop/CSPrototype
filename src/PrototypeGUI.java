@@ -72,7 +72,14 @@ public class PrototypeGUI
     //Array of table headings to give table model
     DefaultTableModel tModel = new DefaultTableModel(headings, 0);
     //Declare default table model
+
+
+    //Multithreading thing (complicated) -------------------------------------------------------------------------
+
+    //JTable mainTable = new JTable(tModel);
     JTable mainTable = new JTable(tModel);
+
+
     //Use default table model to declare a JTable
     JScrollPane mainTableScroll = new JScrollPane(mainTable);
     //Use that JTable to declare a JScrollPane
@@ -214,6 +221,7 @@ public class PrototypeGUI
         mainTable.setAutoCreateRowSorter(true);
         mainTableScroll.setSize(190,455);
         mainTableScroll.setLocation(5,220);
+        //mainTable.checkUpdate();//--------------------------------------------------------------------------------------------------------------------
         mainPanel.add(mainTableScroll);
 
         banner.setLocation(0,0);
@@ -261,54 +269,6 @@ public class PrototypeGUI
         tempServiceList.readAllServices(saveFolder);
         removeAllRows();
         //addAllRows();
-    }
-
-    /*public void initMainComps()
-    {
-        // Further initialisations
-
-        cbxSortBy.setLocation(50, 460);
-        cbxSortBy.setSize(150, 30);
-        mainPanel.add(cbxSortBy);
-
-        btnSort.setLocation(50,400);
-        btnSort.setSize(150,50);
-        btnSort.addActionListener(e->btnSort_Click());
-        btnSort.setText("Sort File");
-        mainPanel.add(btnSort);
-
-        btnSearch.setLocation(250,400);
-        btnSearch.setSize(150,50);
-        btnSearch.addActionListener(e->btnSearch_Click());
-        btnSearch.setText("Do Search");
-        mainPanel.add(btnSearch);
-
-        btnRefreshTable.setLocation(450,400);
-        btnRefreshTable.setSize(150,50);
-        btnRefreshTable.addActionListener(e->btnResetTable_Click());
-        btnRefreshTable.setText("Refresh Table");
-        mainPanel.add(btnRefreshTable);
-
-        btnReadFile.setLocation(50,500);
-        btnReadFile.setSize(550,50);
-        btnReadFile.addActionListener(e->btnReadFile_Click());
-        btnReadFile.setText("Read from File");
-        //mainPanel.add(btnReadFile);
-
-        addSong.setLocation(650, 400);
-        addSong.setSize(150, 50);
-        addSong.addActionListener(e->btnAddSong_Click());
-        addSong.setText("View map");
-        mainPanel.add(addSong);
-
-
-
-
-    }*/
-
-    public void initMap()
-    {
-
     }
 
     public void twitterBtn_Click()
@@ -389,20 +349,31 @@ public class PrototypeGUI
         }
     }
 
+    public void updateFromTable()
+    {
+
+    }
+
     public void update(String queryVarName, String queryVarTime)
     {
+        //mainTable.update(queryVarName, queryVarTime);
+        System.out.println("Running update with " + queryVarName + " and " + queryVarTime);
         if(queryVarTime!=null)
         {
             LocalTime paramTime = LocalTime.parse(queryVarTime);
             LocalTime currentTime = LocalTime.now();
+            System.out.println("Local time = " + currentTime);
             if (paramTime.isAfter(currentTime)) {
                 long minsUntil = currentTime.until(paramTime, ChronoUnit.MINUTES);
                 int minsUntilInt = (int) minsUntil;
+                System.out.println("MinsUntil = " + minsUntilInt);
                 if (minsUntilInt > 60) {
                     long hoursUntil = currentTime.until(paramTime, ChronoUnit.HOURS);
                     minsUntilInt = minsUntilInt % 60;
+                    System.out.println("Adding row " + queryVarName + " " + queryVarTime + " " + String.valueOf(hoursUntil) + "hrs" + minsUntilInt);
                     addRow(queryVarName, queryVarTime, String.valueOf(hoursUntil) + "hrs " + minsUntilInt + "mins");
                 } else {
+                    System.out.println("Adding row " + queryVarName + " " + queryVarTime + " " + String.valueOf(minsUntil));
                     addRow(queryVarName, queryVarTime, String.valueOf(minsUntil) + "mins");
                 }
             }
@@ -441,7 +412,7 @@ public class PrototypeGUI
 
     public void btnAddSong_Click()
     {
-        initMap();
+        //initMap();
         theTabs.setSelectedComponent(mapPanel);
     }
 
@@ -489,9 +460,15 @@ public class PrototypeGUI
         // This passes the temp object into the add row procedure which adds it to the table
         // If an exception is thrown, then a popup appears saying that an error has occurred
         // If the returned string of indexes is empty then a popup appears stating this and all rows are added to the table
-        String returnedIndexes = tempServiceList.searchByName(searchName);
-        if(returnedIndexes != null)
+        String returnedIndexes = "";
+
+        if(searchName != "Start") {
+            returnedIndexes = tempServiceList.searchByName(searchName);
+        }
+
+        if(returnedIndexes != "")
         {
+            removeAllRows();
             try
             {
                 String[] returnedIndexesSplit = returnedIndexes.split(",");
@@ -516,12 +493,31 @@ public class PrototypeGUI
 
     public void addRow(String c1, String c2, String c3)
     {
+        //mainTable.addRow(c1, c2, c3);
         String[] tempElements = new String[3];
         tempElements[0] = c1;
         tempElements[1] = c2;
         tempElements[2] = c3;
-        tableContents.add(tempElements);
+        //tableContents.add(tempElements);
+        System.out.println("Adding " + tempElements[0] + " " + tempElements[1] + " " + tempElements[2]);
         tModel.addRow(tempElements);
+
+        //mainTable.
+        //mainTable = new QueryTable(tModel, secondsInt, this);
+    }
+
+    public void startTimer()
+    {
+        LocalTime currentTime = LocalTime.now();
+        long seconds = currentTime.getSecond();
+        seconds = Math.round(seconds);
+        int secondsInt = (int) seconds;
+        secondsInt = (60 - secondsInt)*1000;
+        long secondsLong = (long) secondsInt;
+        myTimerTask mTT = new myTimerTask();
+        mTT.getInstance(this);
+        java.util.Timer timer = new java.util.Timer("Timer");
+        timer.schedule(mTT, secondsLong, 60000);
     }
 
     public void addAllRows() // ------------------------------------------------------------------ With old table structure
@@ -540,7 +536,7 @@ public class PrototypeGUI
     public void removeAllRows()
     {
         //System.out.println("Remove all rows called");
-        tableContents = new ArrayList<>();
+        //tableContents = new ArrayList<>();
         int rowCount = tModel.getRowCount();
         //System.out.println("There are " + rowCount + " rows");
         for(int i = (rowCount - 1); i > -1; i--)
