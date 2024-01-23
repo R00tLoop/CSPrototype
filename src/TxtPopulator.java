@@ -32,6 +32,7 @@ public class TxtPopulator
             s.vID = ("V000" + iV);
         }
 
+        /*
         s.stopTimes[0][0] = array[rand.nextInt(6)];
         s.stopTimes[0][1] = "11:00";
         s.stopTimes[1][0] = array[rand.nextInt(6)];
@@ -43,5 +44,7 @@ public class TxtPopulator
 
         s.newSaveFile(s.sName);
         s.save();
+
+         */
     }
 }

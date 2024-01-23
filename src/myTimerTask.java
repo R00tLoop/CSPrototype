@@ -4,11 +4,11 @@ public class myTimerTask extends TimerTask
 {
     PrototypeGUI pGUI;
 
-
     @Override
     public void run()
     {
-        pGUI.btnSearch_Click();
+        System.out.println("MY TIMER TASK RUN-------------------------------------------");
+        pGUI.myPlanJourneyClick();
     }
 
     public void getInstance(PrototypeGUI temp)

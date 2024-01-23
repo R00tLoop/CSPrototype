@@ -269,6 +269,8 @@ public class PrototypeGUI
         tempServiceList.readAllServices(saveFolder);
         removeAllRows();
         //addAllRows();
+
+        newTimer();
     }
 
     public void twitterBtn_Click()
@@ -339,7 +341,37 @@ public class PrototypeGUI
         assert finish != null; // ---------------------------------------------------------- Useful, start using more
         if(finish.equals("Destination"))
         {
-            System.out.println("Trying to work with start string:" + start);
+            //System.out.println("Trying to work with start string:" + start);
+            tempServiceList.servicesFrom(start);
+            for(String s : tempServiceList.serviceTimes)
+            {
+                String[] split = s.split(",");
+                update(split[0], split[1]);
+            }
+        }
+        else
+        {
+            PlanJourney jP = new PlanJourney();
+            ArrayList<String[]> services = jP.searchJourney((String) stLocation.getSelectedItem(), (String) stLocation_9.getSelectedItem()); //Returns a series of services and times
+            for(String[] i : services)
+            {
+                update(i[0], i[1]); // Returns the name of the service and the time it arrives at the finish stop currently
+            }
+        }
+    }
+
+    public void myPlanJourneyClick()
+    {
+        //Question mark button method
+        //System.out.println("btnPlanJourney_Click() method called");
+        removeAllRows();
+        String start = "";
+        start = (String) stLocation.getSelectedItem();
+        String finish = (String) stLocation_9.getSelectedItem();
+        assert finish != null; // ---------------------------------------------------------- Useful, start using more
+        if(finish.equals("Destination"))
+        {
+            //System.out.println("Trying to work with start string:" + start);
             tempServiceList.servicesFrom(start);
             for(String s : tempServiceList.serviceTimes)
             {
@@ -356,30 +388,39 @@ public class PrototypeGUI
 
     public void update(String queryVarName, String queryVarTime)
     {
+        /*
+        myTimerTask mTT = new myTimerTask();
+        java.util.Timer timer = new java.util.Timer("Timer");
+        mTT.getInstance(this);
+        timer.schedule(mTT, 10000);
+        */
+
         //mainTable.update(queryVarName, queryVarTime);
         System.out.println("Running update with " + queryVarName + " and " + queryVarTime);
         if(queryVarTime!=null)
         {
             LocalTime paramTime = LocalTime.parse(queryVarTime);
             LocalTime currentTime = LocalTime.now();
-            System.out.println("Local time = " + currentTime);
+            //System.out.println("Local time = " + currentTime);
             if (paramTime.isAfter(currentTime)) {
                 long minsUntil = currentTime.until(paramTime, ChronoUnit.MINUTES);
                 int minsUntilInt = (int) minsUntil;
-                System.out.println("MinsUntil = " + minsUntilInt);
+                //System.out.println("MinsUntil = " + minsUntilInt);
                 if (minsUntilInt > 60) {
                     long hoursUntil = currentTime.until(paramTime, ChronoUnit.HOURS);
                     minsUntilInt = minsUntilInt % 60;
-                    System.out.println("Adding row " + queryVarName + " " + queryVarTime + " " + String.valueOf(hoursUntil) + "hrs" + minsUntilInt);
+                    System.out.println("Update: adding row " + queryVarName + " " + queryVarTime + " " + String.valueOf(hoursUntil) + "hrs" + minsUntilInt);
                     addRow(queryVarName, queryVarTime, String.valueOf(hoursUntil) + "hrs " + minsUntilInt + "mins");
                 } else {
-                    System.out.println("Adding row " + queryVarName + " " + queryVarTime + " " + String.valueOf(minsUntil));
+                    System.out.println("Update: adding row " + queryVarName + " " + queryVarTime + " " + String.valueOf(minsUntil));
                     addRow(queryVarName, queryVarTime, String.valueOf(minsUntil) + "mins");
                 }
             }
         }
     }
 
+
+    /*
     public void updateTimes()
     {
         removeAllRows();
@@ -400,7 +441,8 @@ public class PrototypeGUI
             }
         }
     }
-
+    */
+    /*
     public void btnReadFile_Click()
     {
         System.out.println("btnReadFile_Click() called");
@@ -409,16 +451,17 @@ public class PrototypeGUI
         removeAllRows();
         addAllRows();
     }
-
+    */
+    /*
     public void btnAddSong_Click()
     {
         //initMap();
         theTabs.setSelectedComponent(mapPanel);
     }
-
+    */
+    /*
     public void btnSort_Click()
     {
-        /*
         // Sets
         String sortBy = (String) cbxSortBy.getSelectedItem();
         if(sortBy.equalsIgnoreCase("rating"))
@@ -436,12 +479,11 @@ public class PrototypeGUI
         sL.writeArrayToFileCommas();
         removeAllRows();
         addAllRows();
-        */
     }
-
+    */
     public void btnSearch_Click()
     {
-        System.out.println("btnSearch_Click() method called");
+        //System.out.println("btnSearch_Click() method called");
         // Receive search term from popup
         //String searchName = JOptionPane.showInputDialog("Title to search?");
         String searchName = searchBar.getText();
@@ -460,15 +502,10 @@ public class PrototypeGUI
         // This passes the temp object into the add row procedure which adds it to the table
         // If an exception is thrown, then a popup appears saying that an error has occurred
         // If the returned string of indexes is empty then a popup appears stating this and all rows are added to the table
-        String returnedIndexes = "";
+        String returnedIndexes = tempServiceList.searchByName(searchName);
 
-        if(searchName != "Start") {
-            returnedIndexes = tempServiceList.searchByName(searchName);
-        }
-
-        if(returnedIndexes != "")
+        if(returnedIndexes != null)
         {
-            removeAllRows();
             try
             {
                 String[] returnedIndexesSplit = returnedIndexes.split(",");
@@ -498,22 +535,21 @@ public class PrototypeGUI
         tempElements[0] = c1;
         tempElements[1] = c2;
         tempElements[2] = c3;
-        //tableContents.add(tempElements);
+        tableContents.add(tempElements);
         System.out.println("Adding " + tempElements[0] + " " + tempElements[1] + " " + tempElements[2]);
         tModel.addRow(tempElements);
-
         //mainTable.
-        //mainTable = new QueryTable(tModel, secondsInt, this);
     }
 
-    public void startTimer()
+    public void newTimer()
     {
         LocalTime currentTime = LocalTime.now();
         long seconds = currentTime.getSecond();
         seconds = Math.round(seconds);
         int secondsInt = (int) seconds;
-        secondsInt = (60 - secondsInt)*1000;
-        long secondsLong = (long) secondsInt;
+        secondsInt = 60 - secondsInt;
+        long secondsLong = secondsInt*1000L;
+        System.out.println(secondsLong + " miliseconds left in minute");
         myTimerTask mTT = new myTimerTask();
         mTT.getInstance(this);
         java.util.Timer timer = new java.util.Timer("Timer");
@@ -522,7 +558,7 @@ public class PrototypeGUI
 
     public void addAllRows() // ------------------------------------------------------------------ With old table structure
     {
-        System.out.println("addAllRows() called");
+        //System.out.println("addAllRows() called");
         int slNumOfServices = tempServiceList.allServices.size();
         Service sTemp;
 
@@ -539,13 +575,19 @@ public class PrototypeGUI
         //tableContents = new ArrayList<>();
         int rowCount = tModel.getRowCount();
         //System.out.println("There are " + rowCount + " rows");
-        for(int i = (rowCount - 1); i > -1; i--)
+        try
         {
-            tModel.removeRow(i);
-            //System.out.println("Removed row " + i); //---------------------------------------------------------------Shows that row 0 is removed every time this method is run which shouldn't be the case
+            for(int i = (rowCount - 1); i > -1; i--)
+            {
+                tModel.removeRow(i);
+                //System.out.println("Removed row " + i); //---------------------------------------------------------------Shows that row 0 is removed every time this method is run which shouldn't be the case
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error trying to remove all rows from table");
         }
     }
-
     /*
     public static void main(String[] args)
     {

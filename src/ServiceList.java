@@ -40,7 +40,7 @@ public class ServiceList
 
     public void readAllServices(File folder)
     {
-        System.out.println("readAllServices() called");
+        //System.out.println("readAllServices() called");
         Service tempService = new Service();
         try
         {
@@ -81,9 +81,12 @@ public class ServiceList
         tempStop.stName = tempStopName;
         int index = tempStopList.searchByStop(tempStop);
         //Clear tempStop object (precaution)
-        tempStop = new Stop();
-        tempStop = tempStopList.allStops.get(index);
-        serviceTimes = tempStop.serviceTimes;
+        if(index!=-1)
+        {
+            tempStop = new Stop();
+            tempStop = tempStopList.allStops.get(index);
+            serviceTimes = tempStop.serviceTimes; // THIS IS WHAT BROKE WHEN I CHANGED THE DATATYPE
+        }
     }
 
 

@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 
-public class Stop extends Entity
+public class Stop
 {
     String stName = "";
     ArrayList<Service> allServices = new ArrayList<>();
@@ -9,9 +9,9 @@ public class Stop extends Entity
     ArrayList<String> serviceTimes = new ArrayList<>();
     String[] location = new String[2];
 
-    public void load(File tempSaveFile)
+    public void load(File tempSaveFile) // OLD STYLE
     {
-        System.out.println("Loading" + tempSaveFile);
+        //System.out.println("Loading" + tempSaveFile);
         try(BufferedReader br = new BufferedReader(new FileReader(tempSaveFile)))
         {
             stName = br.readLine();
@@ -31,27 +31,18 @@ public class Stop extends Entity
         }
     }
 
-    public void save()
+    public String getSaveString()
     {
-        try(FileWriter fw = new FileWriter(getSaveFile(stName))) // Try-with-resources
+        StringBuilder saveEntry = new StringBuilder(stName);
+        //Iterates through arrayList
+        for(String s : serviceTimes)
         {
-            fw.write(toString());
-            fw.write("\r\n");
-
-            //Iterates through arrayList
-            for(Service s : allServices)
-            {
-                fw.write(s.sName);
-                fw.write("\r\n");
-            }
+            saveEntry.append(",").append(s);
         }
-        catch(Exception e)
-        {
-            System.out.println("Error thrown writing to file.");
-        }
+        return saveEntry.toString();
     }
 
-    public File getSaveFile(String name)
+    public File getSaveFile(String name) // OLD STYLE
     {
         File f = new File("Saves\\Stops\\" + name + ".txt");
         if(!f.exists())
@@ -61,7 +52,7 @@ public class Stop extends Entity
         return f;
     }
 
-    public void newSaveFile(String name)
+    public void newSaveFile(String name) // OLD STYLE
     {
         try
         {
@@ -77,7 +68,7 @@ public class Stop extends Entity
         }
     }
 
-    public void loadFromName(String name)
+    public void loadFromName(String name) // OLD STYLE
     {
         File file = getSaveFile(name);
         load(file);

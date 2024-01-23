@@ -1,12 +1,15 @@
 import java.io.*;
+import java.util.*;
+
 //import java.util.*;
 
-public class Service extends Entity
+public class Service
 {
     String sName = "";
     String dID = "";
     String vID = "";
-    String[][] stopTimes = new String[100][2];
+    //String[][] stopTimes = new String[100][2];
+    ArrayList<String[]> stopTimes = new ArrayList<>();
     int stopCount = 0;
 
     //Create sav file for each service
@@ -17,7 +20,7 @@ public class Service extends Entity
     {
         Service s = new Service();
         s.load(s.getSaveFile("T12"));
-        System.out.println(s);
+        //System.out.println(s);
     }
 
     /*public void outputIt()
@@ -65,6 +68,7 @@ public class Service extends Entity
 
     public void save()
     {
+        String[] arryString = new String[2];
         try(FileWriter fw = new FileWriter(getSaveFile(sName))) // Try-with-resources
         {
             fw.write(toString());
@@ -73,7 +77,8 @@ public class Service extends Entity
             //Iterates through 2d array writing
             for(int i = 0; i < stopCount; i++)
             {
-                fw.write(stopTimes[i][0] + "," + stopTimes[i][1]);
+                arryString = stopTimes.get(i);
+                fw.write(arryString[0] + "," + arryString[1]);
                 fw.write("\r\n");
             }
         }
@@ -85,7 +90,7 @@ public class Service extends Entity
 
     public void load(File tempSaveFile)
     {
-        System.out.println("Loading " + tempSaveFile);
+        //System.out.println("Loading " + tempSaveFile);
         try(BufferedReader br = new BufferedReader(new FileReader(tempSaveFile)))
         {
             int i = 0;
@@ -96,7 +101,7 @@ public class Service extends Entity
             dID = tempStringSplit[1];
             vID = tempStringSplit[2];
 
-            System.out.println(sName + dID + vID);
+            //System.out.println(sName + dID + vID);
 
             tempString = br.readLine();
 
@@ -104,8 +109,7 @@ public class Service extends Entity
             {
                 tempStringSplit = tempString.split(","); // Splits at commas
 
-                stopTimes[i][0] = tempStringSplit[0];
-                stopTimes[i][1] = tempStringSplit[1];
+                stopTimes.add(tempStringSplit); // ----------------------------------Just changed, might break
 
                 tempString = br.readLine();
                 i++;
