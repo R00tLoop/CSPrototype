@@ -15,13 +15,13 @@ public class DataOrganiser
         {
             for(String[] sAry : tempService.stopTimes) // Go through its array
             {
-                if (!tFS.searchForStop(sAry[0])) // If there is no temp file in the folder
+                //sAry is in the form [STOP NAME, TIME OF ARRIVAL]
+                tempStop.stName = sAry[0];
+                if (allStops.checkForStop(sAry[0]) == -1) // If there is no stop of that name in the array
                 {
-                    tFS.makeTempFile(sAry[0]); // Make a temp file for that stop VERY HACKY SOLUTION, ABSOLUTELY NEEDS REDOING
-                    tempStop.stName = sAry[0];
                     allStops.allStops.add(tempStop);
+                    System.out.println("Added " + sAry[0] + " to the StopList");
                 }
-                //tempStop = tFS.load(sAry[0], tempStop); // Load it
                 tempStop = (sortStop) allStops.getStopByName(sAry[0]); // Load it
                 tempStop.sortServiceTimes.add(new String[]{tempService.sName, sAry[1]}); // Record when this service will arrive
                 tFS = new tempFileSearch(); // Clear the tempFileSearch

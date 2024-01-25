@@ -188,4 +188,17 @@ public class StopList
         }
         return rtrn;
     }
+
+    public int checkForStop(String searchName)
+    {
+        int rtrn = -1;
+        for(int i = 0; i < allStops.size(); i++)
+        {
+            if (searchName.equalsIgnoreCase(allStops.get(i).stName))
+            {
+                rtrn = i;
+            }
+        }
+        return rtrn;
+    }
 }
