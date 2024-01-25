@@ -21,6 +21,18 @@ public class tempFileSearch
         return isThere;
     }
 
+    public void saveAString(String s, File f)
+    {
+        try(FileWriter fW = new FileWriter(f))
+        {
+            fW.write(s);
+        }
+        catch(Exception e)
+        {
+            System.out.println("String written to file");
+        }
+    }
+
     public boolean searchForStopList(String s)
     {
         boolean isThere = false;
@@ -51,20 +63,37 @@ public class tempFileSearch
     public void makeTempFile(String s)
     {
         File f = new File("Saves\\temp\\Stops" + s + ".txt");
+        boolean worked = false;
+        try
+        {
+            worked = f.createNewFile();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Failed to create file");
+        }
+        if(worked)
+        {
+            System.out.println("File created successfully");
+        }
+        else
+        {
+            System.out.println("File could not be created");
+        }
     }
 
-    public void sortAll()
+    public void sortAll(StopList paramStopList)
     {
         StopSort sortAlgorithm = new StopSort();
-        sortStop tempSortStop = new sortStop();
+        sortStop tempSortStop;
         StopList tempStopList = new StopList();
         sortStop tempSaveStop = new sortStop();
         StopList sL1 = new StopList();
         StopList sL2 = new StopList();
         StopList sL3 = new StopList();
-        for(File f : Objects.requireNonNull(stopSaveFile.listFiles()))
+        for(Stop s : paramStopList.allStops)
         {
-            tempSortStop.load(f);
+            tempSortStop = (sortStop) s;
             String[][] allServicesArray = new String[tempSortStop.sortServiceTimes.size()][2];
             for(int i = 0; i < tempSortStop.sortServiceTimes.size(); i++)
             {
