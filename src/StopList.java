@@ -21,6 +21,7 @@ public class StopList
             {
                 fW.write(s.getSaveString());
             }
+            fW.close();
         }
         catch(Exception e)
         {

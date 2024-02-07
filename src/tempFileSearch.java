@@ -60,18 +60,27 @@ public class tempFileSearch
         return sorSt;
     }
 
-    public void makeTempFile(String s)
+    public void makeTempFile(String s, String type)
     {
+<<<<<<< Updated upstream
         File f = new File("Saves\\temp\\Stops" + s + ".txt");
         boolean worked = false;
         try
         {
             worked = f.createNewFile();
+=======
+        boolean fWorked = false;
+        File f = new File("Saves\\temp\\" + type + "\\" + s + ".txt");
+        try
+        {
+            fWorked = f.createNewFile();
+>>>>>>> Stashed changes
         }
         catch(Exception e)
         {
             System.out.println("Failed to create file");
         }
+<<<<<<< Updated upstream
         if(worked)
         {
             System.out.println("File created successfully");
@@ -79,6 +88,15 @@ public class tempFileSearch
         else
         {
             System.out.println("File could not be created");
+=======
+        if(fWorked)
+        {
+            System.out.println("Made a temp");
+        }
+        else
+        {
+            System.out.println("Failed to make a temp");
+>>>>>>> Stashed changes
         }
     }
 

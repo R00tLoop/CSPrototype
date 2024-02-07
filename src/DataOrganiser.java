@@ -19,8 +19,13 @@ public class DataOrganiser
                 tempStop.stName = sAry[0];
                 if (allStops.checkForStop(sAry[0]) == -1) // If there is no stop of that name in the array
                 {
+<<<<<<< Updated upstream
                     allStops.allStops.add(tempStop);
                     System.out.println("Added " + sAry[0] + " to the StopList");
+=======
+                    tFS.makeTempFile(sAry[0], "Stops"); // Make it a temp file
+                    System.out.println("Making temp file");
+>>>>>>> Stashed changes
                 }
                 tempStop = (sortStop) allStops.getStopByName(sAry[0]); // Load it
                 tempStop.sortServiceTimes.add(new String[]{tempService.sName, sAry[1]}); // Record when this service will arrive
