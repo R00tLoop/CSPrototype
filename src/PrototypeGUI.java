@@ -34,6 +34,7 @@ public class PrototypeGUI
     JPanel mainPanel = new JPanel(null);
     JPanel mapPanel = new JPanel(null);
     JPanel planJourneyPanel = new JPanel(null);
+    JPanel loginPanel = new JPanel(null);
     //Main panel, contains components
     JButton addSong = new JButton();
     JComboBox<String> cbxSortBy = new JComboBox<>(arrSortBy);
@@ -84,6 +85,156 @@ public class PrototypeGUI
     JScrollPane mainTableScroll = new JScrollPane(mainTable);
     //Use that JTable to declare a JScrollPane
 
+
+
+
+
+
+    JCheckBox cBremember = new JCheckBox();
+    JLabel jLUName = new JLabel();
+    JTextField jtUName = new JTextField();
+    JLabel jLPass = new JLabel();
+    JButton jBLogin = new JButton();
+    JPasswordField jPPass = new JPasswordField();
+    JButton jBForgot = new JButton();
+    JButton jBSignUp = new JButton();
+
+
+    JLabel jLNameC = new JLabel();
+    JTextField jtUNameC = new JTextField();
+    JLabel jLPassC = new JLabel();
+    JPasswordField jPPassC = new JPasswordField();
+    JButton jBSignUpC = new JButton();
+    JButton jBgoBack = new JButton();
+
+    JButton btnClearAll = new JButton();
+
+    AccountList accList = new AccountList();
+
+    AdminAcct guiAccount = new AdminAcct();
+
+    public void initLoginComps()
+    {
+        cBremember.setLocation(80,320);
+        cBremember.setSize(115,30);
+        cBremember.setForeground( new Color(-10066330) );
+        cBremember.setBackground( new Color(-1) );
+        cBremember.setText("Remember me");
+        cBremember.setSelected(false);
+        loginPanel.add(cBremember);
+
+        jLUName.setLocation(80,120);
+        jLUName.setSize(70,30);
+        jLUName.setOpaque(true);
+        jLUName.setBackground( new Color(-1) );
+        jLUName.setText(" Username");
+        loginPanel.add(jLUName);
+
+        jtUName.setLocation(80,160);
+        jtUName.setSize(500,30);
+        loginPanel.add(jtUName);
+
+        jLPass.setLocation(80,200);
+        jLPass.setSize(70,30);
+        jLPass.setOpaque(true);
+        jLPass.setBackground( new Color(-1) );
+        jLPass.setText("  Password");
+        loginPanel.add(jLPass);
+
+        jBLogin.setLocation(480,305);
+        jBLogin.setSize(100,50);
+        jBLogin.setForeground(Color.WHITE);
+        jBLogin.addActionListener(e->jBLogin_Click());
+        jBLogin.setBackground( new Color(-11221164) );
+        jBLogin.setText("LOG IN");
+        loginPanel.add(jBLogin);
+
+        jPPass.setLocation(80,240);
+        jPPass.setSize(500,30);
+        jPPass.setColumns(10);
+        jPPass.setEchoChar('*');
+        loginPanel.add(jPPass);
+
+        jBForgot.setLocation(80,280);
+        jBForgot.setSize(170,30);
+        //jBForgot.addActionListener(e->jBForgot_Click());
+        jBForgot.setText("Forgot your password?");
+        loginPanel.add(jBForgot);
+
+        jBSignUp.setLocation(300,305);
+        jBSignUp.setSize(160,50);
+        jBSignUp.addActionListener(e->jBSignUp_Click());
+        jBSignUp.setText("CREATE AN ACCOUNT");
+        loginPanel.add(jBSignUp);
+
+        accList.readArrayFromFileCommas();
+    }
+
+    public void jBLogin_Click()
+    {
+        SecureHash hash = new SecureHash();
+        String uName = jtUName.getText();
+        int positionFound = -1;
+        int count = 0;
+        while(positionFound == -1 && count < accList.position)
+        {
+            if((accList.allAccounts[count].userID).equals(hash.strHash(uName)) == true)
+            {
+                positionFound = count;
+            }
+            count++;
+        }
+        if(positionFound != -1)
+        {
+            String pass = jPPass.getText();
+            if((accList.allAccounts[positionFound].pKey).equals(hash.strHash(pass)) == true)
+            {
+                guiAccount = accList.allAccounts[positionFound];
+                //theTabs.setSelectedComponent(searchSortPanel); ---------------------------------------------------------------
+                jtUName.setText("");
+                jPPass.setText("");
+                btnReadFile_Click();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Incorrect password.", "Incorrect password.", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Account not found.", "Not Found", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public void jBSignUp_Click()
+    {
+        //theTabs.setSelectedComponent(newAccPanel);
+    }
+    public void jBSignUpC_Click()
+    {
+        guiAccount.createAccount(jtUNameC.getText(), jPPassC.getText());
+        if(accList.addAccountToList(guiAccount) == false)
+        {
+            JOptionPane.showMessageDialog(null, "This username is taken.", "Account already exists", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Account created successfully.", "Account created", JOptionPane.INFORMATION_MESSAGE);
+            jtUNameC.setText("");
+            jPPassC.setText("");
+            accList.writeArrayToFileCommas();
+            //theTabs.setSelectedComponent(searchSortPanel); // ----------------------------------------------------------------------------------
+            btnReadFile_Click();
+        }
+    }
+    public void btnReadFile_Click()
+    {
+    }
+
+
+
+
+
     public void initFrame()
     {
         // Sets a layout for the JFrame
@@ -105,6 +256,9 @@ public class PrototypeGUI
         //initComponentsTwo();
         //initCAComps();
         initMainComps2();
+        initLoginComps();
+        loginPanel.setBackground(Color.WHITE);
+        theTabs.addTab("Login", loginPanel);
 
         //loginPanel.setBackground(Color.WHITE);
         //newAccPanel.setBackground(Color.WHITE);
