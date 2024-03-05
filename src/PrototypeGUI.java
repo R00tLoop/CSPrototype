@@ -450,6 +450,7 @@ public class PrototypeGUI
         mainTable.setAutoCreateRowSorter(true);
         mainTableScroll.setSize(190,455);
         mainTableScroll.setLocation(5,220);
+        mainTable.setDefaultRenderer(Object.class, new MyCellRenderer());
         //mainTable.checkUpdate();//--------------------------------------------------------------------------------------------------------------------
         mainPanel.add(mainTableScroll);
 
