@@ -8,9 +8,15 @@ public class StopList
 
     public void saveAllStops(File f)
     {
+        for(Stop sto : allStops)
+        {
+            System.out.println("STOP " + sto.stName + " IS IN THIS LIST");
+        }
         Stop[] stopListForSave = new Stop[allStops.size()];
+        System.out.println("------------");
         for(int i = 0; i < allStops.size(); i++)
         {
+            System.out.println("ADDING STOP " + allStops.get(i).stName + " TO THE TEMP ARRAY");
             stopListForSave[i] = allStops.get(i);
         }
         SLSort sortAlgo = new SLSort();
@@ -20,12 +26,20 @@ public class StopList
             for(Stop s : sortedStopList)
             {
                 fW.write(s.getSaveString());
+                fW.write("\r\n");
             }
-            fW.close();
         }
         catch(Exception e)
         {
             System.out.println("Error writing to file");
+        }
+    }
+
+    public void outputAllStops()
+    {
+        for(Stop sto : allStops)
+        {
+            System.out.println("STOP " + sto.stName + " IS IN THIS LIST");
         }
     }
 
@@ -68,13 +82,13 @@ public class StopList
 
     public Stop getStopByName(String name)
     {
-        System.out.println("Trying to get stop with name: " + name);
+        //System.out.println("Trying to get stop with name: " + name);
         Stop tempStop = new Stop();
         int index = -1;
         int rogue = -1;
         for(int i = 0; i < allStops.size(); i++)
         {
-            System.out.println("Comparing stop against: " + allStops.get(i).stName);
+            //System.out.println("Comparing stop against: " + allStops.get(i).stName);
             //System.out.println("Searching " + i + " " + allStops.get(i).stName + " against " + name);
             if(((allStops.get(i).stName).toUpperCase()).equals(name.toUpperCase()) && rogue==-1)
             {

@@ -20,11 +20,13 @@ public class PlanJourney
         File startFile = startStopList.getRegionFile(start);
         startStopList.load(startFile);
         Stop startStop = startStopList.getStopByName(start);
+        System.out.println("StartStop is: " + startStop.stName + " ----------------------------------------");
 
         StopList finishStopList = new StopList();
         File finishFile = finishStopList.getRegionFile(finish);
         finishStopList.load(finishFile);
         Stop finishStop = finishStopList.getStopByName(finish);
+        System.out.println("FinishStop is: " + finishStop.stName + " ----------------------------------------");
 
         ArrayList<String[]> outAL = new ArrayList<>();
 
@@ -36,24 +38,28 @@ public class PlanJourney
             String[] split = s.split(",");
             tempService.load(tempService.getSaveFile(split[0]));
             services.add(tempService);
+            System.out.println("Adding service " + tempService.sName);
+            tempService = new Service();
         }
 
         String[] splitString1;
         String[] tempString = new String[3];
         for(Service s : services)
         {
-            System.out.println("SName is: " + s.sName);
+            System.out.println("New Service " + s.sName + "---------");
             for(String[] sA : s.stopTimes)
             {
-                System.out.println("sA[0] is: " + sA[0]);
-                System.out.println("sA[1] is: " + sA[1]);
+                System.out.println("Checking stop: " + sA[0]);
+                //System.out.println("sA[1] is: " + sA[1]);
                 if(sA[0].equals(finish))
                 {
-                    System.out.println("Found a service: " + sA[0]);
+                    System.out.println("Found a service which works: " + s.sName + "##########################");
                     tempString[0] = s.sName;
                     //tempString[1] = // Time that the service arrives at the start stop
                     tempString[1] = sA[1]; // Time that the service arrives at the finish stop
                     outAL.add(tempString);
+                    System.out.println("Added " + tempString + " to the output");
+                    tempString = new String[3];
                 }
             }
         }
@@ -87,6 +93,12 @@ public class PlanJourney
         }
         }
          */
+
+        System.out.println("================================================================================================");
+        for(String[] s : outAL)
+        {
+            System.out.println(s);
+        }
         return outAL;
     }
 

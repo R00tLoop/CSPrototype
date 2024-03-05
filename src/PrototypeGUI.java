@@ -86,7 +86,7 @@ public class PrototypeGUI
     //Use that JTable to declare a JScrollPane
 
 
-
+    JButton loginButton = new JButton();
 
 
 
@@ -107,11 +107,25 @@ public class PrototypeGUI
     JButton jBSignUpC = new JButton();
     JButton jBgoBack = new JButton();
 
+
     JButton btnClearAll = new JButton();
 
     AccountList accList = new AccountList();
 
     AdminAcct guiAccount = new AdminAcct();
+
+    JPanel newAccPanel = new JPanel(null);
+
+
+
+    //# NEED TO MAKE TIMER TASK EITHER NOT START IMMEDIATELY OR CANCEL WHEN LOGIN IS TAKING PLACE
+    //# NEED TO FIX LOGIN BUTTON LOCATION
+    //# NEED TO MAKE UI CONSISTENT WITH LOGIN BUTTON
+    //# NEED TO MAKE ADMINACCT FILES ANDD LOGINS
+
+
+
+
 
     public void initLoginComps()
     {
@@ -170,6 +184,45 @@ public class PrototypeGUI
         accList.readArrayFromFileCommas();
     }
 
+    public void initCAComps()
+    {
+        jLNameC.setLocation(80,120);
+        jLNameC.setSize(70,30);
+        jLNameC.setOpaque(true);
+        jLNameC.setBackground( new Color(-1) );
+        jLNameC.setText(" Username");
+        newAccPanel.add(jLNameC);
+
+        jtUNameC.setLocation(80,159);
+        jtUNameC.setSize(500,30);
+        newAccPanel.add(jtUNameC);
+
+        jLPassC.setLocation(80,200);
+        jLPassC.setSize(70,30);
+        jLPassC.setOpaque(true);
+        jLPassC.setBackground( new Color(-1) );
+        jLPassC.setText("  Password");
+        newAccPanel.add(jLPassC);
+
+        jPPassC.setLocation(80,240);
+        jPPassC.setSize(500,30);
+        jPPassC.setColumns(10);
+        jPPassC.setEchoChar('*');
+        newAccPanel.add(jPPassC);
+
+        jBSignUpC.setLocation(250,290);
+        jBSignUpC.setSize(150,50);
+        jBSignUpC.addActionListener(e->jBSignUpC_Click());
+        jBSignUpC.setText("CREATE ACCOUNT");
+        newAccPanel.add(jBSignUpC);
+
+        jBgoBack.setLocation(440, 300);
+        jBgoBack.setSize(100,30);
+        jBgoBack.addActionListener(e->jBgoBack_Click());
+        jBgoBack.setText("Back");
+        newAccPanel.add(jBgoBack);
+    }
+
     public void jBLogin_Click()
     {
         SecureHash hash = new SecureHash();
@@ -206,10 +259,16 @@ public class PrototypeGUI
         }
     }
 
+    public void jBgoBack_Click()
+    {
+        theTabs.setSelectedComponent(loginPanel);
+    }
+
     public void jBSignUp_Click()
     {
-        //theTabs.setSelectedComponent(newAccPanel);
+        theTabs.setSelectedComponent(newAccPanel);
     }
+
     public void jBSignUpC_Click()
     {
         guiAccount.createAccount(jtUNameC.getText(), jPPassC.getText());
@@ -227,8 +286,14 @@ public class PrototypeGUI
             btnReadFile_Click();
         }
     }
+
     public void btnReadFile_Click()
     {
+    }
+
+    public void loginButton_Click()
+    {
+        theTabs.setSelectedComponent(loginPanel);
     }
 
 
@@ -254,11 +319,13 @@ public class PrototypeGUI
         //initLoginComps();
         //initComponents();
         //initComponentsTwo();
-        //initCAComps();
-        initMainComps2();
+        initCAComps();
         initLoginComps();
+        initMainComps2();
         loginPanel.setBackground(Color.WHITE);
         theTabs.addTab("Login", loginPanel);
+        newAccPanel.setBackground(Color.WHITE);
+        theTabs.addTab("Create account", newAccPanel);
 
         //loginPanel.setBackground(Color.WHITE);
         //newAccPanel.setBackground(Color.WHITE);
@@ -275,6 +342,7 @@ public class PrototypeGUI
         theTabs.addTab("Plan Journey", planJourneyPanel);
 
         prototypeWindow.setIconImage(new ImageIcon("Icons\\SpotLOGO.png").getImage());
+        theTabs.setSelectedComponent(mainPanel);
 
         prototypeWindow.setBackground(Color.WHITE);
 
@@ -317,6 +385,13 @@ public class PrototypeGUI
         twitterBtn.setSize(30,30);
         twitterBtn.addActionListener(e->twitterBtn_Click());
         mainPanel.add(twitterBtn);
+
+        loginButton.setLocation(895, 12); //#-------------------------------------------------------------------------------------------------------
+        loginButton.setSize(75, 25);
+        loginButton.addActionListener(e->loginButton_Click());
+        loginButton.setText("Log in");
+        loginButton.setBackground( new Color(-1));
+        mainPanel.add(loginButton);
 
         twitterBtn_3.setLocation(750,10);
         twitterBtn_3.setSize(30,30);
@@ -543,7 +618,7 @@ public class PrototypeGUI
     public void update(String queryVarName, String queryVarTime)
     {
         /*
-        myTimerTask mTT = new myTimerTask();
+        MyTimerTask mTT = new MyTimerTask();
         java.util.Timer timer = new java.util.Timer("Timer");
         mTT.getInstance(this);
         timer.schedule(mTT, 10000);
@@ -635,7 +710,7 @@ public class PrototypeGUI
         addAllRows();
     }
     */
-    public void btnSearch_Click()
+    public void btnSearch_Click() //#-----------------------------------------------------------------------------------------------------------------------------
     {
         //System.out.println("btnSearch_Click() method called");
         // Receive search term from popup
@@ -668,6 +743,12 @@ public class PrototypeGUI
                 {
                     tempService = tempServiceList.allServices.get(Integer.parseInt(returnedIndexesSplit[i]));
                     addRow(tempService.sName, tempService.dID, tempService.vID);
+
+                    for(String[] s : tempService.stopTimes)
+                    {
+                        update(s[0], s[1]);
+                    }
+
                 }
             }
             catch(Exception e)
@@ -704,7 +785,7 @@ public class PrototypeGUI
         secondsInt = 60 - secondsInt;
         long secondsLong = secondsInt*1000L;
         System.out.println(secondsLong + " miliseconds left in minute");
-        myTimerTask mTT = new myTimerTask();
+        MyTimerTask mTT = new MyTimerTask();
         mTT.getInstance(this);
         java.util.Timer timer = new java.util.Timer("Timer");
         timer.schedule(mTT, secondsLong, 60000);

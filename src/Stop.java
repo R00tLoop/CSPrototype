@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 public class Stop
 {
+    ArrayList<String[]> sortServiceTimes = new ArrayList<>();
+
     String stName = "";
     ArrayList<Service> allServices = new ArrayList<>();
 

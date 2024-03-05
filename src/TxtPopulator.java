@@ -1,16 +1,17 @@
 import java.io.*;
 import java.util.*;
+import java.time.*;
 public class TxtPopulator
 {
     Random rand = new Random();
     Service s = new Service();
 
-    String[] array = {"Stop A", "Stop B", "Stop C", "Stop D", "Stop E", "Stop F", "Stop G"};
+    String[] array = {"Stop A", "Stop B", "Stop C", "Stop D", "Stop E", "Stop F", "Stop G", "Stop H", "Stop I"};
 
     public static void main(String[] args)
     {
         TxtPopulator t = new TxtPopulator();
-        for(int i = 0; i < 15; i++)
+        for(int i = 0; i < 10; i++)
         {
             t.createNewSav(i);
             Service s = new Service();
@@ -19,7 +20,7 @@ public class TxtPopulator
 
     public void createNewSav(int iV)
     {
-        s.sName = ("T" + (iV+14));
+        s.sName = ("T" + (iV+1));
         iV = iV + rand.nextInt(8);
         if(iV < 10)
         {
@@ -32,19 +33,22 @@ public class TxtPopulator
             s.vID = ("V000" + iV);
         }
 
-        /*
-        s.stopTimes[0][0] = array[rand.nextInt(6)];
-        s.stopTimes[0][1] = "11:00";
-        s.stopTimes[1][0] = array[rand.nextInt(6)];
-        s.stopTimes[1][1] = "12:00";
-        s.stopTimes[2][0] = array[rand.nextInt(6)];
-        s.stopTimes[2][1] = "13:00";
+        LocalTime prevTime = LocalTime.of(16,0,0);
+        String[] strAry = new String[2];
 
-
-
+        for(int i = 0; i < 8; i++)
+        {
+            strAry[0] = array[rand.nextInt(8)];
+            strAry[1] = prevTime.toString();
+            System.out.println(strAry[0]);
+            System.out.println("Time is " + prevTime.toString());
+            prevTime = prevTime.plusMinutes(rand.nextInt(60));
+            s.stopTimes.add(strAry);
+            strAry = new String[2];
+        }
+        strAry = new String[2];
         s.newSaveFile(s.sName);
         s.save();
-
-         */
+        s = new Service();
     }
 }

@@ -37,7 +37,7 @@ public class AccountList
         {
             // A fileWriter is declared from the java.util.* library and is to write to "AccSavFileCommas.txt", a file in the project folder
             // A temp object of CustomSong was declared called temp
-            FileWriter fw = new FileWriter("AccSavFileCommas.txt");
+            FileWriter fw = new FileWriter("\\Saves\\Accounts\\AccSavFileCommas.txt");
             AdminAcct temp = new AdminAcct();
 
             // This increments through the allSongs array, up to the element before the first empty element
@@ -88,7 +88,7 @@ public class AccountList
         int count = 0;
         try
         {
-            BufferedReader br = new BufferedReader(new FileReader("AccSavFileCommas.txt")); // Declare the FileReader within a BufferedReader
+            BufferedReader br = new BufferedReader(new FileReader("\\Saves\\Accounts\\AccSavFileCommas.txt")); // Declare the FileReader within a BufferedReader
             AdminAcct temp = new AdminAcct(); // New temp object to read to
 
             String tempString = br.readLine(); // Read the first line first so that the while loop works out, not that inefficient but not the most elegant solution

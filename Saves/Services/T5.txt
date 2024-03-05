@@ -1,0 +1,9 @@
+T5,D00011,V00011
+Stop A,16:00
+Stop B,16:04
+Stop E,16:39
+Stop F,17:34
+Stop F,18:00
+Stop H,18:06
+Stop G,18:09
+Stop C,19:06

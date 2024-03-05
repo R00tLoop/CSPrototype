@@ -68,17 +68,14 @@ public class Service
 
     public void save()
     {
-        String[] arryString = new String[2];
         try(FileWriter fw = new FileWriter(getSaveFile(sName))) // Try-with-resources
         {
             fw.write(toString());
             fw.write("\r\n");
 
-            //Iterates through 2d array writing
-            for(int i = 0; i < stopCount; i++)
+            for(String[] s : stopTimes)
             {
-                arryString = stopTimes.get(i);
-                fw.write(arryString[0] + "," + arryString[1]);
+                fw.write(s[0] + "," + s[1]);
                 fw.write("\r\n");
             }
         }

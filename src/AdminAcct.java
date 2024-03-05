@@ -32,7 +32,7 @@ public class AdminAcct
         //# Make a save file for the user
         try
         {
-            File tempObj = new File("Saves\\" + userID + ".txt");
+            File tempObj = new File("Saves\\Accounts\\" + userID + ".txt");
             if(tempObj.createNewFile() == true)
             {
                 System.out.println("File created successfully.");
@@ -46,7 +46,7 @@ public class AdminAcct
 
     public void deleteAccount() // MAYBE NOT NECESSARY
     {
-        File tempObj = new File("Saves\\" + userID + ".txt");
+        File tempObj = new File("Saves\\Accounts\\" + userID + ".txt");
         if(tempObj.delete() == true)
         {
             System.out.println("File deleted successfully.");
