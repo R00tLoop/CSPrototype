@@ -11,6 +11,7 @@ class MyCellRenderer extends DefaultTableCellRenderer
         if(sA.isServiceIn((String) table.getValueAt(row, 0)))
         {
             cell.setBackground(Color.cyan);
+            System.out.println("THIS HAS RUN #############################################################################");
         }
         return cell;
     }

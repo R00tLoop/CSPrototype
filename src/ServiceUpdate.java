@@ -34,6 +34,7 @@ public class ServiceUpdate
         try
         {
             location = new File("\\Saves\\ServiceUpdates\\" + name);
+            System.out.println(location.getAbsolutePath());
         }
         catch(Exception e)
         {
