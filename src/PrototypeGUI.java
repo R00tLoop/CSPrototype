@@ -38,6 +38,8 @@ public class PrototypeGUI
     JPanel planJourneyPanel = new JPanel(null);
     JPanel loginPanel = new JPanel(null);
     //Main panel, contains components
+
+    JPanel serviceUpdatePanel = new JPanel(null);
     JButton addSong = new JButton();
     JComboBox<String> cbxSortBy = new JComboBox<>(arrSortBy);
 
@@ -121,6 +123,40 @@ public class PrototypeGUI
 
     SpinnerDateModel sDM = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
     JSpinner timeSpinner = new JSpinner(sDM);
+
+
+    JButton addServiceUpdate = new JButton();
+    String[] cbxServicesAffected_data={"Option1","Option2","Option3"};
+    JComboBox<String> cbxServicesAffected = new JComboBox<>(cbxServicesAffected_data);
+    JLabel lblServicesAffected = new JLabel();
+    JTextArea taDescription = new JTextArea();
+    JTextField tfSUName = new JTextField();
+    JLabel lblName = new JLabel();
+    JLabel lblDescription = new JLabel();
+    JLabel lblStart = new JLabel();
+    JLabel lblFinish = new JLabel();
+    JButton jbEdit = new JButton();
+    JButton jbDelete = new JButton();
+    JButton jbNew = new JButton();
+
+
+    String[] sUHeadings = {"Name", "Services", "Start", "Finish"};
+    //Array of table headings to give table model
+    DefaultTableModel sUTModel = new DefaultTableModel(sUHeadings, 0);
+    //Declare default table model
+
+    //Multithreading thing (complicated) -------------------------------------------------------------------------
+
+    //JTable mainTable = new JTable(tModel);
+    JTable sUTable = new JTable(sUTModel);
+
+
+    //Use default table model to declare a JTable
+    JScrollPane sUTableScroll = new JScrollPane(sUTable);
+
+
+
+
 
 
 
@@ -237,7 +273,7 @@ public class PrototypeGUI
         int count = 0;
         while(positionFound == -1 && count < accList.position)
         {
-            if((accList.allAccounts[count].userID).equals(hash.strHash(uName)) == true)
+            if((accList.allAccounts[count].userID).equals(SecureHash.strHash(uName)))
             {
                 positionFound = count;
             }
@@ -246,13 +282,13 @@ public class PrototypeGUI
         if(positionFound != -1)
         {
             String pass = jPPass.getText();
-            if((accList.allAccounts[positionFound].pKey).equals(hash.strHash(pass)) == true)
+            if((accList.allAccounts[positionFound].pKey).equals(SecureHash.strHash(pass)))
             {
                 guiAccount = accList.allAccounts[positionFound];
-                //theTabs.setSelectedComponent(searchSortPanel); ---------------------------------------------------------------
-                jtUName.setText("");
-                jPPass.setText("");
-                btnReadFile_Click();
+                theTabs.setSelectedComponent(serviceUpdatePanel);
+                //jtUName.setText("");
+                //jPPass.setText("");
+                //btnReadFile_Click();
             }
             else
             {
@@ -278,7 +314,7 @@ public class PrototypeGUI
     public void jBSignUpC_Click()
     {
         guiAccount.createAccount(jtUNameC.getText(), jPPassC.getText());
-        if(accList.addAccountToList(guiAccount) == false)
+        if(!accList.addAccountToList(guiAccount))
         {
             JOptionPane.showMessageDialog(null, "This username is taken.", "Account already exists", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -328,6 +364,7 @@ public class PrototypeGUI
         initCAComps();
         initLoginComps();
         initMainComps2();
+        initSUComps();
         loginPanel.setBackground(Color.WHITE);
         theTabs.addTab("Login", loginPanel);
         newAccPanel.setBackground(Color.WHITE);
@@ -346,6 +383,7 @@ public class PrototypeGUI
         theTabs.addTab("Main", mainPanel);
         theTabs.addTab("Map", mapPanel);
         theTabs.addTab("Plan Journey", planJourneyPanel);
+        theTabs.addTab("Service Updates", serviceUpdatePanel);
 
         prototypeWindow.setIconImage(new ImageIcon("Icons\\SpotLOGO.png").getImage());
         theTabs.setSelectedComponent(mainPanel);
@@ -354,6 +392,139 @@ public class PrototypeGUI
 
         // Make the window visible
         prototypeWindow.setVisible(true);
+    }
+
+
+
+
+    public void initSUComps()
+    {
+        addServiceUpdate.setLocation(60,480);
+        addServiceUpdate.setSize(150,50);
+        addServiceUpdate.addActionListener(e->addServiceUpdate_Click());
+        addServiceUpdate.setText("Save");
+        serviceUpdatePanel.add(addServiceUpdate);
+
+        cbxServicesAffected.setLocation(140,110);
+        cbxServicesAffected.setSize(100,20);
+        cbxServicesAffected.setEditable(false );
+        serviceUpdatePanel.add(cbxServicesAffected);
+
+        lblServicesAffected.setLocation(30,110);
+        lblServicesAffected.setSize(92,20);
+        lblServicesAffected.setOpaque(true);
+        lblServicesAffected.setText("Service Affected");
+        serviceUpdatePanel.add(lblServicesAffected);
+
+        taDescription.setLocation(40,210);
+        taDescription.setSize(200,190);
+        taDescription.setRows(5);
+        taDescription.setColumns(5);
+        serviceUpdatePanel.add(taDescription);
+
+        tfSUName.setLocation(140,140);
+        tfSUName.setSize(100,30);
+        serviceUpdatePanel.add(tfSUName);
+
+        lblName.setLocation(50,145);
+        lblName.setSize(45,20);
+        lblName.setOpaque(true);
+        lblName.setText("Name");
+        serviceUpdatePanel.add(lblName);
+
+        lblDescription.setLocation(40,190);
+        lblDescription.setSize(70,20);
+        lblDescription.setOpaque(true);
+        lblDescription.setText("Description");
+        serviceUpdatePanel.add(lblDescription);
+
+        lblStart.setLocation(40,400);
+        lblStart.setSize(60,20);
+        lblStart.setOpaque(true);
+        lblStart.setText("Start Date");
+        serviceUpdatePanel.add(lblStart);
+
+        lblFinish.setLocation(40,430);
+        lblFinish.setSize(70,20);
+        lblFinish.setOpaque(true);
+        lblFinish.setText("Finish Date");
+        serviceUpdatePanel.add(lblFinish);
+
+        jbEdit.setLocation(520,480);
+        jbEdit.setSize(100,50);
+        jbEdit.addActionListener(e->jbEdit_Click());
+        jbEdit.setText("Edit");
+        serviceUpdatePanel.add(jbEdit);
+
+        jbDelete.setLocation(700,480);
+        jbDelete.setSize(100,50);
+        jbDelete.addActionListener(e->jbDelete_Click());
+        jbDelete.setText("Delete");
+        serviceUpdatePanel.add(jbDelete);
+
+        jbNew.setLocation(40,40);
+        jbNew.setSize(200,50);
+        jbNew.addActionListener(e->jbNew_Click());
+        jbNew.setText("Create Service Update");
+        serviceUpdatePanel.add(jbNew);
+
+        sUTableScroll.setSize(500, 400);
+        sUTableScroll.setLocation(400, 40);
+        serviceUpdatePanel.add(sUTableScroll);
+    }
+
+    ServiceUpdateList sUL = new ServiceUpdateList();
+
+    private void jbEdit_Click()
+    {
+        ServiceUpdate tempSU = sUL.searchArray((String) sUTable.getValueAt(sUTable.getSelectedRow(), 0));
+        tfSUName.setText(tempSU.name);
+        taDescription.setText(tempSU.description);
+        tempSU = new ServiceUpdate();
+    }
+
+    private void jbDelete_Click()
+    {
+        ServiceUpdate tempSU = sUL.searchArray((String) sUTable.getValueAt(sUTable.getSelectedRow(), 0));
+        sUL.deleteFromArray(tempSU);
+        tempSU = new ServiceUpdate();
+        refreshSUTable();
+    }
+
+    private void jbNew_Click()
+    {
+        ServiceUpdate tempSU = new ServiceUpdate();
+        sUL.allServiceUpdates.add(tempSU);
+        tempSU = new ServiceUpdate();
+        refreshSUTable();
+    }
+
+    public void refreshSUTable()
+    {
+        for(int i = 0; i < sUTModel.getRowCount(); i ++)
+        {
+            sUTModel.removeRow(i);
+        }
+        for(ServiceUpdate s : sUL.allServiceUpdates)
+        {
+            addToSUTable(s);
+        }
+    }
+
+    public void addToSUTable(ServiceUpdate sU)
+    {
+            String[] tempElements = new String[4];
+            tempElements[0] = sU.name;
+            tempElements[1] = sU.servicesAffected.get(0);
+            tempElements[2] = sU.times[0].toString();
+            tempElements[3] = sU.times[1].toString();
+            sUTModel.addRow(tempElements);
+    }
+
+    private void addServiceUpdate_Click()
+    {
+        ServiceUpdate tempSU = sUL.searchArray((String) sUTable.getValueAt(sUTable.getSelectedRow(), 0));
+
     }
 
     public void initMainComps2()
@@ -557,6 +728,10 @@ public class PrototypeGUI
 
     public void serviceUpdates_Click()
     {
+
+
+
+
         try
         {
             String myUrl = "https://lloydscoaches.com/serviceupdates/";
@@ -566,6 +741,8 @@ public class PrototypeGUI
         {
             System.out.println("Failed to reach website");
         }
+
+
     }
 
     public void initPlanJourney()
@@ -581,9 +758,6 @@ public class PrototypeGUI
         String start = "";
         start = (String) stLocation.getSelectedItem();
         String finish = (String) stLocation_9.getSelectedItem();
-
-        LocalTime startFinishTime = LocalTime.parse((CharSequence) timeSpinner.getValue());
-        String ab = (String) jpCombo.getSelectedItem();
 
         assert finish != null; // ---------------------------------------------------------- Useful, start using more
 
@@ -634,6 +808,11 @@ public class PrototypeGUI
 
     }
 
+    public LocalTime getLocalTimeFromDate(Date date)
+    {
+        return LocalTime.of(date.getHours(), date.getMinutes());
+    }
+
     public void update(String queryVarName, String queryVarTime)
     {
         /*
@@ -643,8 +822,30 @@ public class PrototypeGUI
         timer.schedule(mTT, 10000);
         */
 
+        LocalTime startFinishTime = getLocalTimeFromDate((Date) timeSpinner.getValue());
+        String ab = (String) jpCombo.getSelectedItem();
+        //System.out.println("Working with " + queryVarTime);
+        //System.out.println("startFinishTime is " + startFinishTime);
+        //System.out.println("ab is " + ab);
+
+        assert ab != null;
+        if(ab.equals("Depart at"))
+        {
+            if(startFinishTime.isAfter(LocalTime.parse(queryVarTime)))
+            {
+                queryVarTime = null;
+            }
+        }
+        else if(ab.equals("Arrive by"))
+        {
+            if(startFinishTime.isBefore(LocalTime.parse(queryVarTime)))
+            {
+                queryVarTime = null;
+            }
+        }
+
         //mainTable.update(queryVarName, queryVarTime);
-        System.out.println("Running update with " + queryVarName + " and " + queryVarTime);
+        //System.out.println("Running update with " + queryVarName + " and " + queryVarTime);
         if(queryVarTime!=null)
         {
             LocalTime paramTime = LocalTime.parse(queryVarTime);
@@ -657,10 +858,10 @@ public class PrototypeGUI
                 if (minsUntilInt > 60) {
                     long hoursUntil = currentTime.until(paramTime, ChronoUnit.HOURS);
                     minsUntilInt = minsUntilInt % 60;
-                    System.out.println("Update: adding row " + queryVarName + " " + queryVarTime + " " + String.valueOf(hoursUntil) + "hrs" + minsUntilInt);
+                    //System.out.println("Update: adding row " + queryVarName + " " + queryVarTime + " " + String.valueOf(hoursUntil) + "hrs" + minsUntilInt);
                     addRow(queryVarName, queryVarTime, String.valueOf(hoursUntil) + "hrs " + minsUntilInt + "mins");
                 } else {
-                    System.out.println("Update: adding row " + queryVarName + " " + queryVarTime + " " + String.valueOf(minsUntil));
+                    //System.out.println("Update: adding row " + queryVarName + " " + queryVarTime + " " + String.valueOf(minsUntil));
                     addRow(queryVarName, queryVarTime, String.valueOf(minsUntil) + "mins");
                 }
             }

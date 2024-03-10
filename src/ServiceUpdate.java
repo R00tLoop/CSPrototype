@@ -33,7 +33,7 @@ public class ServiceUpdate
     {
         try
         {
-            location = new File("\\Saves\\ServiceUpdates\\" + name);
+            location = new File("\\Saves\\ServiceUpdates\\ServiceUpdates.txt");
             System.out.println(location.getAbsolutePath());
         }
         catch(Exception e)
