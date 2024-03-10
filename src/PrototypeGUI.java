@@ -795,8 +795,6 @@ public class PrototypeGUI
         //mainTable.
     }
 
-    java.util.Timer timer = new java.util.Timer("Timer");
-    MyTimerTask mTT = new MyTimerTask();
     public void newTimer()
     {
         LocalTime currentTime = LocalTime.now();
@@ -806,15 +804,9 @@ public class PrototypeGUI
         secondsInt = 60 - secondsInt;
         long secondsLong = secondsInt*1000L;
         System.out.println(secondsLong + " miliseconds left in minute");
+        MyTimerTask mTT = new MyTimerTask();
         mTT.getInstance(this);
-        timer.schedule(mTT, secondsLong, 60000);
-    }
-
-    public void updateTimer(long secondsLong)
-    {
-        timer.cancel();
-        timer = new java.util.Timer("Timer");
-        mTT.getInstance(this);
+        java.util.Timer timer = new java.util.Timer("Timer");
         timer.schedule(mTT, secondsLong, 60000);
     }
 
