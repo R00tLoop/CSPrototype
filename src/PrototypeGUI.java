@@ -5,6 +5,8 @@ import java.io.*;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 public class PrototypeGUI
@@ -74,7 +76,6 @@ public class PrototypeGUI
     DefaultTableModel tModel = new DefaultTableModel(headings, 0);
     //Declare default table model
 
-
     //Multithreading thing (complicated) -------------------------------------------------------------------------
 
     //JTable mainTable = new JTable(tModel);
@@ -115,6 +116,11 @@ public class PrototypeGUI
     AdminAcct guiAccount = new AdminAcct();
 
     JPanel newAccPanel = new JPanel(null);
+
+
+
+    SpinnerDateModel sDM = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+    JSpinner timeSpinner = new JSpinner(sDM);
 
 
 
@@ -431,9 +437,9 @@ public class PrototypeGUI
         jpCombo.setEditable(false );
         mainPanel.add(jpCombo);
 
-        timeTF.setLocation(100,185);
-        timeTF.setSize(50,25);
-        mainPanel.add(timeTF);
+        //timeTF.setLocation(100,185);
+        //timeTF.setSize(50,25);
+        //mainPanel.add(timeTF);
 
         btnPlanJourney.setLocation(160, 185);
         btnPlanJourney.setSize(25, 25);
@@ -478,6 +484,13 @@ public class PrototypeGUI
         banner3.setText("");
         banner3.setBorder(blackline);
         mainPanel.add(banner3);
+
+        JSpinner.DateEditor dE = new JSpinner.DateEditor(timeSpinner, "HH:mm");
+        timeSpinner.setEditor(dE);
+        timeSpinner.setLocation(95, 185);
+        timeSpinner.setSize(60, 25);
+        timeSpinner.setBorder(blackline);
+        mainPanel.add(timeSpinner);
 
         banner4.setLocation(0,177);
         banner4.setSize(200,40);
@@ -568,7 +581,12 @@ public class PrototypeGUI
         String start = "";
         start = (String) stLocation.getSelectedItem();
         String finish = (String) stLocation_9.getSelectedItem();
+
+        LocalTime startFinishTime = LocalTime.parse((CharSequence) timeSpinner.getValue());
+        String ab = (String) jpCombo.getSelectedItem();
+
         assert finish != null; // ---------------------------------------------------------- Useful, start using more
+
         if(finish.equals("Destination"))
         {
             //System.out.println("Trying to work with start string:" + start);
@@ -777,6 +795,8 @@ public class PrototypeGUI
         //mainTable.
     }
 
+    java.util.Timer timer = new java.util.Timer("Timer");
+    MyTimerTask mTT = new MyTimerTask();
     public void newTimer()
     {
         LocalTime currentTime = LocalTime.now();
@@ -786,9 +806,15 @@ public class PrototypeGUI
         secondsInt = 60 - secondsInt;
         long secondsLong = secondsInt*1000L;
         System.out.println(secondsLong + " miliseconds left in minute");
-        MyTimerTask mTT = new MyTimerTask();
         mTT.getInstance(this);
-        java.util.Timer timer = new java.util.Timer("Timer");
+        timer.schedule(mTT, secondsLong, 60000);
+    }
+
+    public void updateTimer(long secondsLong)
+    {
+        timer.cancel();
+        timer = new java.util.Timer("Timer");
+        mTT.getInstance(this);
         timer.schedule(mTT, secondsLong, 60000);
     }
 
