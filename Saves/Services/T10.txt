@@ -1,9 +1,9 @@
-T10,D00014,V00014
-Stop G,16:00
-Stop F,16:45
-Stop D,17:08
-Stop D,17:14
-Stop C,17:14
-Stop B,17:31
-Stop D,18:17
-Stop H,18:44
+T10,D00009,V00009
+Stop A,16:00
+Stop A,16:05
+Stop F,16:42
+Stop A,16:43
+Stop F,17:26
+Stop G,17:57
+Stop D,18:54
+Stop A,19:08
